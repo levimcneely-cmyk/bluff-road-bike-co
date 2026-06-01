@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bluff Road Bike Co. — The Bluff</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #021328;
+    --blue-mid: #021f45;
+    --gold: #E9BD37;
+    --gold-light: #f0cc55;
+    --cream: #F5F0E4;
+    --offwhite: #faf7f0;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--offwhite);
+    font-family: 'Barlow', sans-serif;
+    color: var(--blue);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 64px;
+    border-bottom: 2px solid var(--gold);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--cream);
+  }
+  .nav-logo span { color: var(--gold); }
+
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(245,240,228,0.7);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--blue);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 80px 24px 60px;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(233,189,55,0.03) 40px,
+      rgba(233,189,55,0.03) 41px
+    );
+  }
+
+  .hero-logo {
+    width: min(340px, 80vw);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.2s forwards;
+  }
+
+  .hero-tagline {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(16px, 3vw, 22px);
+    color: rgba(245,240,228,0.65);
+    letter-spacing: 2px;
+    margin-top: 28px;
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.6s forwards;
+  }
+
+  .hero-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0;
+    width: min(400px, 80vw);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.8s forwards;
+  }
+  .hero-divider-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+  .hero-divider-diamond {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  .hero-cta {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--blue);
+    background: var(--gold);
+    padding: 14px 36px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    opacity: 0;
+    animation: fadeUp 1s ease 1s forwards;
+  }
+  .hero-cta:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  /* ── SECTIONS ── */
+  section { padding: 96px 24px; }
+
+  .section-inner { max-width: 960px; margin: 0 auto; }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 7vw, 72px);
+    line-height: 1;
+    color: var(--blue);
+    margin-bottom: 24px;
+  }
+
+  /* ── WHY ── */
+  .why { background: var(--blue); }
+  .why .section-title { color: var(--cream); }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2px;
+    margin-top: 48px;
+  }
+
+  .why-card {
+    background: rgba(255,255,255,0.04);
+    border-top: 3px solid var(--gold);
+    padding: 36px 28px;
+    transition: background 0.2s;
+  }
+  .why-card:hover { background: rgba(255,255,255,0.08); }
+
+  .why-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--gold);
+    opacity: 0.25;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .why-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: var(--cream);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .why-card p {
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(245,240,228,0.6);
+  }
+
+  /* ── SERVICES ── */
+  .services { background: var(--offwhite); }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .service-card {
+    border: 1.5px solid rgba(0,40,104,0.12);
+    padding: 32px 28px;
+    position: relative;
+    transition: border-color 0.2s, transform 0.15s;
+    background: white;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 0; height: 3px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+  .service-card:hover { transform: translateY(-4px); border-color: rgba(0,40,104,0.25); }
+  .service-card:hover::before { width: 100%; }
+
+  .service-icon { font-size: 28px; margin-bottom: 14px; }
+
+  .service-card h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 10px;
+  }
+
+  .service-card p {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(0,40,104,0.65);
+  }
+
+  /* ── CONTACT ── */
+  .contact { background: var(--cream); }
+
+  .contact-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .contact-subtitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 18px;
+    color: rgba(0,40,104,0.55);
+    margin-bottom: 40px;
+    letter-spacing: 1px;
+  }
+
+  .contact-box {
+    background: var(--blue);
+    padding: 48px 40px;
+    position: relative;
+  }
+
+  .contact-box::before {
+    content: '';
+    position: absolute;
+    top: 8px; left: 8px; right: -8px; bottom: -8px;
+    border: 1.5px solid var(--gold);
+    pointer-events: none;
+  }
+
+  .contact-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .contact-iykyk {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: rgba(245,240,228,0.4);
+    margin-bottom: 28px;
+  }
+
+  .contact-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 auto 28px;
+    width: 200px;
+  }
+  .contact-divider-line { flex: 1; height: 1px; background: rgba(233,189,55,0.35); }
+  .contact-divider-star { color: var(--gold); font-size: 10px; opacity: 0.6; }
+
+  .contact-desc {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(245,240,228,0.6);
+  }
+  .contact-desc strong { color: var(--gold); font-weight: 600; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--blue);
+    border-top: 2px solid var(--gold);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: var(--cream);
+  }
+  .footer-brand span { color: var(--gold); }
+
+  .footer-note {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(245,240,228,0.3);
+    text-transform: uppercase;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    nav { padding: 0 20px; }
+    .nav-links { gap: 20px; }
+    section { padding: 72px 20px; }
+    .contact-box { padding: 36px 24px; }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">THE <span>BLUFF</span></div>
+  <ul class="nav-links">
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="home">
+  <img class="hero-logo" src="logo.png" alt="Bluff Road Bike Co." />
+  <div class="hero-divider">
+    <div class="hero-divider-line"></div>
+    <div class="hero-divider-diamond"></div>
+    <div class="hero-divider-line"></div>
+  </div>
+  <p class="hero-tagline">Fast turnaround. Fair price. Indiana-built.</p>
+  <br>
+  <a href="#services" class="hero-cta">See What We Fix</a>
+</section>
+
+<section class="why" id="why">
+  <div class="section-inner">
+    <p class="section-label reveal">Why The Bluff</p>
+    <h2 class="section-title reveal">Not Your Average Bike Shop</h2>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-number">01</div>
+        <h3>Same-Day Service</h3>
+        <p>No week-long wait. Drop it off, get it back fast — because you've got miles to ride.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-number">02</div>
+        <h3>Fair Price</h3>
+        <p>You pay for parts and labor — not the overhead of a fancy storefront you didn't ask for.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-number">03</div>
+        <h3>Rider First</h3>
+        <p>We ride too. Your bike gets the same care we give ours — no shortcuts, no upsells.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-number">04</div>
+        <h3>Indiana Made</h3>
+        <p>Local shop, local riders. Proud to keep Hoosier bikes rolling on Hoosier roads.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="section-inner">
+    <p class="section-label reveal">What We Do</p>
+    <h2 class="section-title reveal">Basic Repairs</h2>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-icon">🔧</div>
+        <h3>Flat Repair & Tire Swap</h3>
+        <p>Tube replacements, tire mounts, and valve swaps. Back on the road before you finish your coffee.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">⚙️</div>
+        <h3>Drivetrain Tune</h3>
+        <p>Cable tension, limit screws, indexing. Crisp, precise shifting — the way it should feel.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🛑</div>
+        <h3>Brake Adjustment</h3>
+        <p>Rim or disc — pad alignment, cable tension, and bleed if needed. Stop with confidence.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🛠️</div>
+        <h3>General Tune-Up</h3>
+        <p>Full once-over before a big ride or after a hard season. Everything adjusted, checked, and dialed.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🧽</div>
+        <h3>Cleaning</h3>
+        <p>Drivetrain degreased, frame wiped down, chain lubed. Ride clean, run smooth.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon">🔍</div>
+        <h3>General Inspection</h3>
+        <p>Heading into a big ride? We'll go top-to-bottom and make sure nothing surprises you out there.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <p class="section-label reveal">Get In Touch</p>
+    <h2 class="section-title reveal">Contact</h2>
+    <p class="contact-subtitle reveal">You know what to do.</p>
+    <div class="contact-box reveal">
+      <div class="contact-name">Levi</div>
+      <div class="contact-iykyk">— if you know, you know —</div>
+      <div class="contact-divider">
+        <div class="contact-divider-line"></div>
+        <div class="contact-divider-star">★</div>
+        <div class="contact-divider-line"></div>
+      </div>
+      <p class="contact-desc">
+        Based in <strong>Greenwood, Indiana</strong>.<br>
+        Reach out the way you always do.<br><br>
+        <em>Contact info coming soon.</em>
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">BLUFF ROAD <span>BIKE CO.</span></div>
+  <div class="footer-note">bluffroadbikeco.com &nbsp;·&nbsp; Greenwood, Indiana</div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.why-grid, .services-grid').forEach(grid => {
+    grid.querySelectorAll('.reveal').forEach((card, i) => {
+      card.style.transitionDelay = `${i * 0.1}s`;
+    });
+  });
+</script>
+
+</body>
+</html>
