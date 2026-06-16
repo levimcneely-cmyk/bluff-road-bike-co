@@ -262,7 +262,7 @@
   .contact { background: var(--cream); }
 
   .contact-inner {
-    max-width: 640px;
+    max-width: 700px;
     margin: 0 auto;
     text-align: center;
   }
@@ -281,6 +281,7 @@
     background: var(--blue);
     padding: 48px 40px;
     position: relative;
+    margin-bottom: 40px;
   }
 
   .contact-box::before {
@@ -307,14 +308,23 @@
     font-size: 13px;
     letter-spacing: 3px;
     color: rgba(245,240,228,0.4);
-    margin-bottom: 28px;
+    margin-bottom: 16px;
   }
+
+  .contact-phone {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+  }
+  .contact-phone a { color: var(--gold); text-decoration: none; transition: opacity 0.2s; }
+  .contact-phone a:hover { opacity: 0.75; }
 
   .contact-divider {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin: 0 auto 28px;
+    margin: 0 auto 24px;
     width: 200px;
   }
   .contact-divider-line { flex: 1; height: 1px; background: rgba(233,189,55,0.35); }
@@ -327,6 +337,103 @@
     color: rgba(245,240,228,0.6);
   }
   .contact-desc strong { color: var(--gold); font-weight: 600; }
+
+  /* Form */
+  .contact-form-wrap {
+    background: white;
+    border: 1.5px solid rgba(2,19,40,0.12);
+    padding: 40px;
+    margin-bottom: 32px;
+    text-align: left;
+  }
+
+  .contact-form-wrap h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--blue);
+    margin-bottom: 24px;
+  }
+
+  .form-group { margin-bottom: 20px; }
+
+  .form-group label {
+    display: block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 8px;
+    opacity: 0.7;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid rgba(2,19,40,0.15);
+    background: var(--offwhite);
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    color: var(--blue);
+    outline: none;
+    transition: border-color 0.2s;
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus { border-color: var(--gold); }
+
+  .form-group textarea { resize: vertical; min-height: 120px; }
+
+  .form-submit {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--blue);
+    background: var(--gold);
+    border: none;
+    padding: 14px 36px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    width: 100%;
+  }
+  .form-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .form-success {
+    display: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: var(--blue);
+    text-align: center;
+    padding: 16px;
+    border: 1px solid var(--gold);
+    margin-top: 16px;
+    background: rgba(233,189,55,0.1);
+  }
+
+  /* Review button */
+  .review-btn {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--blue);
+    background: transparent;
+    border: 2px solid var(--blue);
+    padding: 14px 36px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .review-btn:hover { background: var(--blue); color: var(--gold); }
 
   /* ── FOOTER ── */
   footer {
@@ -475,22 +582,42 @@
   <div class="contact-inner">
     <p class="section-label reveal">Get In Touch</p>
     <h2 class="section-title reveal">Contact</h2>
-    <p class="contact-subtitle reveal">You know what to do.</p>
     <div class="contact-box reveal">
       <div class="contact-name">Levi</div>
-      <div class="contact-iykyk">— if you know, you know —</div>
+      <div class="contact-phone"><a href="tel:+13177217339">(317) 721-7339</a></div>
       <div class="contact-divider">
         <div class="contact-divider-line"></div>
         <div class="contact-divider-star">★</div>
         <div class="contact-divider-line"></div>
       </div>
       <p class="contact-desc">
-        Based in <strong>Greenwood, Indiana</strong>.<br>
-        Reach out the way you always do.<br><br>
-        <em>Contact info coming soon.</em><br><br>
+        Based in <strong>Greenwood, Indiana</strong>.<br><br>
         <strong>Payment:</strong> You cover the parts. Throw in a $20 or a cigar and we're square.
       </p>
     </div>
+
+    <div class="contact-form-wrap reveal">
+      <h3>Send a Message</h3>
+      <form id="contact-form" action="https://formspree.io/f/xnjyrpgw" method="POST">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required />
+        </div>
+        <div class="form-group">
+          <label for="message">What do you need?</label>
+          <textarea id="message" name="message" placeholder="Flat tire, tune-up, general question..." required></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send It</button>
+        <div class="form-success" id="form-success">Got it — I'll be in touch. 🤙</div>
+      </form>
+    </div>
+
+    <a href="https://g.page/r/CeCDeERRsHcWEBM/review" target="_blank" class="review-btn reveal">⭐ Leave a Google Review</a>
+
   </div>
 </section>
 
@@ -513,6 +640,35 @@
       card.style.transitionDelay = `${i * 0.1}s`;
     });
   });
+
+  // Formspree AJAX submit
+  const form = document.getElementById('contact-form');
+  if (form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn = form.querySelector('.form-submit');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          form.reset();
+          document.getElementById('form-success').style.display = 'block';
+          btn.textContent = 'Sent!';
+        } else {
+          btn.textContent = 'Try Again';
+          btn.disabled = false;
+        }
+      } catch {
+        btn.textContent = 'Try Again';
+        btn.disabled = false;
+      }
+    });
+  }
 </script>
 
 </body>
