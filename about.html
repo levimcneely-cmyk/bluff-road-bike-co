@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Bluff Road Bike Co.</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #021328;
+    --gold: #E9BD37;
+    --gold-light: #f0cc55;
+    --crimson: #A70D37;
+    --cream: #F5F0E4;
+    --offwhite: #faf7f0;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--offwhite);
+    font-family: 'Barlow', sans-serif;
+    color: var(--blue);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 64px;
+    border-bottom: 2px solid var(--crimson);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    color: var(--cream);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--gold); }
+
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(245,240,228,0.7);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    background: var(--blue);
+    padding: 140px 24px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      -45deg, transparent, transparent 40px,
+      rgba(233,189,55,0.03) 40px, rgba(233,189,55,0.03) 41px
+    );
+  }
+
+  .page-header-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .page-header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 96px);
+    color: var(--cream);
+    line-height: 1;
+  }
+
+  /* ── SECTIONS ── */
+  .section { padding: 88px 24px; }
+  .section-inner { max-width: 860px; margin: 0 auto; }
+  .section-alt { background: var(--blue); }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(38px, 6vw, 64px);
+    line-height: 1;
+    margin-bottom: 32px;
+  }
+
+  .section-alt .section-title { color: var(--cream); }
+
+  .prose {
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(2,19,40,0.75);
+  }
+
+  .prose-alt {
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(245,240,228,0.65);
+  }
+
+  .prose strong, .prose-alt strong {
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 40px 0;
+  }
+  .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
+  .divider-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); }
+
+  /* ── BIKES ── */
+  .bikes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2px;
+    margin-top: 40px;
+  }
+
+  .bike-card {
+    background: rgba(255,255,255,0.04);
+    border-top: 3px solid var(--gold);
+    padding: 32px 28px;
+    transition: background 0.2s;
+  }
+  .bike-card:hover { background: rgba(255,255,255,0.08); }
+
+  .bike-type {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    opacity: 0.8;
+  }
+
+  .bike-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 1px;
+    color: var(--cream);
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+
+  .bike-spec {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: rgba(245,240,228,0.45);
+  }
+
+  .bike-retired {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--crimson);
+    border: 1px solid var(--crimson);
+    padding: 2px 8px;
+    opacity: 0.85;
+  }
+
+  /* ── LOGO SECTION ── */
+  .logo-section { background: var(--cream); }
+
+  .logo-flex {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+
+  .logo-img-wrap {
+    flex: 0 0 220px;
+  }
+
+  .logo-img-wrap img {
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .logo-text { flex: 1; min-width: 260px; }
+
+  .logo-text h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--blue);
+    margin-bottom: 10px;
+    margin-top: 24px;
+  }
+
+  .logo-text h3:first-child { margin-top: 0; }
+
+  .logo-text p {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(2,19,40,0.7);
+    margin-bottom: 8px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--blue);
+    border-top: 2px solid var(--crimson);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: var(--cream);
+  }
+  .footer-brand span { color: var(--gold); }
+
+  .footer-note {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgba(245,240,228,0.3);
+    text-transform: uppercase;
+  }
+
+  /* ── ANIMATIONS ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 20px; }
+    .nav-links { gap: 16px; }
+    .section { padding: 64px 20px; }
+    footer { flex-direction: column; text-align: center; }
+    .logo-flex { flex-direction: column; }
+    .logo-img-wrap { flex: 0 0 auto; width: 180px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">THE <span>BLUFF</span></a>
+  <ul class="nav-links">
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="index.html#why">Why Us</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <p class="page-header-label">Bluff Road Bike Co.</p>
+  <h1>About</h1>
+</div>
+
+<!-- HOW IT STARTED -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-label reveal">The Origin</p>
+    <h2 class="section-title reveal">How It Started</h2>
+    <p class="prose reveal">
+      It started the way most good things do — helping out a friend. A flat here, a drivetrain tune there, a brake adjustment before a big ride. I'd been working on my buddies' bikes for years doing basic fixes, and always had this idea in the back of my head: a low-cost, fast-turnaround bike shop I'd open in retirement. No markup, no week-long wait, just get people back on the road.
+    </p>
+    <div class="divider reveal"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+    <p class="prose reveal">
+      Then a friend called the bluff. <em>Why wait for retirement?</em> So here we are. <strong>Bluff Road Bike Co.</strong> — doing the basics, done right and done fast, right now out of Greenwood, Indiana.
+    </p>
+  </div>
+</section>
+
+<!-- WHAT I RIDE -->
+<section class="section section-alt">
+  <div class="section-inner">
+    <p class="section-label reveal">In The Garage</p>
+    <h2 class="section-title reveal">What I Ride</h2>
+    <div class="bikes-grid">
+      <div class="bike-card reveal">
+        <div class="bike-type">Road</div>
+        <div class="bike-name">Cervelo S3 Disc</div>
+        <div class="bike-spec">2018 &nbsp;·&nbsp; Ultegra</div>
+      </div>
+      <div class="bike-card reveal">
+        <div class="bike-type">Gravel</div>
+        <div class="bike-name">Focus Mares AL</div>
+        <div class="bike-spec">2019 &nbsp;·&nbsp; 105</div>
+      </div>
+      <div class="bike-card reveal">
+        <div class="bike-type">Triathlon / TT</div>
+        <div class="bike-name">Felt DA4</div>
+        <div class="bike-spec">2014 &nbsp;·&nbsp; Dura-Ace</div>
+        <span class="bike-retired">Retired · 20,000 mi</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT THE NAME & LOGO -->
+<section class="section logo-section">
+  <div class="section-inner">
+    <p class="section-label reveal">The Identity</p>
+    <h2 class="section-title reveal">The Name & Logo</h2>
+    <div class="logo-flex">
+      <div class="logo-img-wrap reveal">
+        <img src="logo.png" alt="Bluff Road Bike Co. Logo" />
+      </div>
+      <div class="logo-text">
+        <h3 class="reveal">The Name</h3>
+        <p class="reveal"><strong>Bluff Road Bike Co.</strong> is short, honest, and local. Bluff Road is where we're based, bikes are what we do, and Co. makes it official. Everyone just calls it <strong>The Bluff</strong> — and that works too.</p>
+
+        <h3 class="reveal">The Bison</h3>
+        <p class="reveal">Bison have deep roots in Indiana history. They once migrated through southern Indiana along a path known as the <strong>Buffalo Trace</strong> — a well-worn route between the prairies of Illinois and the oak savannahs of Kentucky. The bison appears on the Indiana state seal, has been part of the state's identity since territorial days in 1800, and was named America's official national mammal in 2016.</p>
+        <p class="reveal">It's a fitting symbol for a shop built on strength, endurance, and moving forward.</p>
+
+        <h3 class="reveal">The Stars</h3>
+        <p class="reveal">The gold stars mirror the Indiana state flag — nineteen stars representing Indiana as the 19th state admitted to the Union. The <strong>red stars</strong> are a nod to Florida, where we lived for a few years — inspired by the red X on the Florida state flag. Two states, one logo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">BLUFF ROAD <span>BIKE CO.</span></div>
+  <div class="footer-note">bluffroadbikeco.com &nbsp;·&nbsp; Greenwood, Indiana</div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.bikes-grid').forEach(grid => {
+    grid.querySelectorAll('.reveal').forEach((card, i) => {
+      card.style.transitionDelay = `${i * 0.12}s`;
+    });
+  });
+</script>
+
+</body>
+</html>
