@@ -370,18 +370,14 @@
   }
 
   // Theme colors for chart — on-brand palette
-  const CHART_COLORS = [
-    '#E9BD37', // gold
-    '#A70D37', // crimson
-    '#2a5298', // mid blue
-    '#c0832a', // dark gold
-    '#6b1525', // dark crimson
-    '#4a7fd4', // light blue
-    '#f0cc55', // light gold
-    '#e05a7a', // pink crimson
-    '#1a3a6e', // deep blue
-    '#d4a017', // amber
-  ];
+  const STYLE_COLORS = {
+    'Road':          '#E9BD37',
+    'Gravel':        '#A70D37',
+    'MTB':           '#2a5298',
+    'Hybrid':        '#4a7fd4',
+    'Beach Cruiser': '#c0832a',
+    'Other':         '#6b6b6b',
+  };
 
   // ── ATHLETES ──
   async function loadAthletes() {
@@ -454,57 +450,87 @@
     try {
       const data = await fetchCSV(SHOPLOG_GID);
       if (!data.length) return;
-      const labels = data.map(r => r['Brand'] || r[Object.keys(r)[0]]);
-      const counts = data.map(r => parseInt(r['Count'] || r[Object.keys(r)[1]]) || 0);
-      const total = counts.reduce((a,b) => a+b, 0);
-      const colors = CHART_COLORS.slice(0, labels.length);
+
+      const brands  = data.map(r => r['Brand'] || r[Object.keys(r)[0]]);
+      const styles  = data.map(r => r['Style']  || r[Object.keys(r)[1]] || 'Other');
+      const counts  = data.map(r => parseInt(r['Count'] || r[Object.keys(r)[2]]) || 0);
+      const total   = counts.reduce((a,b) => a+b, 0);
+      const colors  = styles.map(s => STYLE_COLORS[s] || STYLE_COLORS['Other']);
+
+      // Custom inline-label plugin
+      const inlineLabels = {
+        id: 'inlineLabels',
+        afterDraw(chart) {
+          const { ctx: c } = chart;
+          const meta = chart.getDatasetMeta(0);
+          const tot = counts.reduce((a,b)=>a+b,0);
+          c.save();
+          meta.data.forEach((arc, i) => {
+            const sliceAngle = arc.endAngle - arc.startAngle;
+            if (sliceAngle < 0.18) return;
+            const angle  = (arc.startAngle + arc.endAngle) / 2;
+            const midR   = (arc.outerRadius + arc.innerRadius) / 2;
+            const x      = arc.x + Math.cos(angle) * midR;
+            const y      = arc.y + Math.sin(angle) * midR;
+            const pct    = ((counts[i]/tot)*100).toFixed(0) + '%';
+
+            // Dark pill background for readability
+            const bw = 52, bh = 28;
+            c.fillStyle = 'rgba(2,19,40,0.72)';
+            c.beginPath();
+            c.roundRect(x - bw/2, y - bh/2, bw, bh, 4);
+            c.fill();
+
+            c.textAlign = 'center';
+            c.textBaseline = 'middle';
+            c.fillStyle = '#F5F0E4';
+            c.font = '600 10px "Barlow Condensed", sans-serif';
+            c.fillText(brands[i], x, y - 7);
+            c.fillStyle = '#E9BD37';
+            c.font = 'bold 12px "Bebas Neue", sans-serif';
+            c.fillText(pct, x, y + 7);
+          });
+          c.restore();
+        }
+      };
 
       const ctx = document.getElementById('shopChart').getContext('2d');
       new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels,
+          labels: brands,
           datasets: [{
             data: counts,
             backgroundColor: colors,
             borderColor: '#021328',
-            borderWidth: 4,
-            hoverOffset: 8
+            borderWidth: 3,
+            hoverOffset: 6
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: true,
+          layout: { padding: 8 },
           plugins: {
             legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: ctx => {
-                  const pct = ((ctx.parsed / total) * 100).toFixed(1);
-                  return ` ${ctx.label}: ${pct}%`;
-                }
-              },
-              backgroundColor: '#021328',
-              titleColor: '#E9BD37',
-              bodyColor: '#F5F0E4',
-              borderColor: 'rgba(233,189,55,0.3)',
-              borderWidth: 1
-            }
+            tooltip: { enabled: false }
           },
-          cutout: '62%'
-        }
+          cutout: '55%'
+        },
+        plugins: [inlineLabels]
       });
 
-      // Side labels
+      // Style color key (one entry per unique style)
       const labelsEl = document.getElementById('shopLabels');
-      labels.forEach((label, i) => {
-        const pct = total > 0 ? ((counts[i]/total)*100).toFixed(1) : 0;
+      const seen = new Set();
+      styles.forEach((style, i) => {
+        if (seen.has(style)) return;
+        seen.add(style);
         const item = document.createElement('div');
         item.className = 'chart-label-item';
         item.innerHTML = `
-          <div class="chart-label-dot" style="background:${colors[i]}"></div>
-          <div class="chart-label-name">${label}</div>
-          <div class="chart-label-pct">${pct}%</div>`;
+          <div class="chart-label-dot" style="background:${STYLE_COLORS[style] || '#6b6b6b'}"></div>
+          <div class="chart-label-name">${style}</div>`;
         labelsEl.appendChild(item);
       });
     } catch(e) {
