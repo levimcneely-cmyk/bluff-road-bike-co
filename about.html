@@ -31,35 +31,13 @@
   }
   .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: var(--cream); text-decoration: none; }
   .nav-logo span { color: var(--gold); }
-  .nav-links { display: flex; gap: 36px; list-style: none; position: relative; }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
   .nav-links a {
     font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
     font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
     color: rgba(245,240,228,0.7); text-decoration: none; transition: color 0.2s;
   }
   .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-
-  /* Dropdown */
-  .nav-dropdown { position: relative; }
-  .nav-dropdown > a { cursor: pointer; display: flex; align-items: center; gap: 6px; }
-  .nav-dropdown > a::after { content: '▾'; font-size: 10px; opacity: 0.6; }
-  .dropdown-menu {
-    display: none; position: absolute; top: calc(100% + 16px); left: 0;
-    background: var(--blue); border: 1px solid rgba(233,189,55,0.2);
-    border-top: 2px solid var(--gold); min-width: 180px; z-index: 200;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-  }
-  .nav-dropdown:hover .dropdown-menu { display: block; }
-  .dropdown-menu a {
-    display: block; padding: 12px 20px;
-    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
-    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
-    color: rgba(245,240,228,0.7); text-decoration: none;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    transition: background 0.15s, color 0.15s;
-  }
-  .dropdown-menu a:hover { background: rgba(233,189,55,0.08); color: var(--gold); }
-  .dropdown-menu a:last-child { border-bottom: none; }
 
   /* ── PAGE HEADER ── */
   .page-header {
@@ -78,6 +56,7 @@
   .section-inner { max-width: 960px; margin: 0 auto; }
   .section-alt { background: var(--blue); }
   .section-cream { background: var(--cream); }
+
   .section-label { font-family: 'Barlow Condensed', sans-serif; font-weight: 300; font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
   .section-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(38px, 6vw, 64px); line-height: 1; margin-bottom: 32px; }
   .section-alt .section-title { color: var(--cream); }
@@ -98,14 +77,21 @@
   .bike-spec { font-family: 'Barlow Condensed', sans-serif; font-weight: 300; font-size: 14px; letter-spacing: 1px; color: rgba(245,240,228,0.45); }
   .bike-retired { display: inline-block; margin-top: 10px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--crimson); border: 1px solid var(--crimson); padding: 2px 8px; }
 
+  /* ── LOGO SECTION ── */
+  .logo-flex { display: flex; gap: 60px; align-items: flex-start; flex-wrap: wrap; margin-top: 40px; }
+  .logo-img-wrap { flex: 0 0 220px; }
+  .logo-img-wrap img { width: 100%; }
+  .logo-text { flex: 1; min-width: 260px; }
+  .logo-text h3 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; color: var(--blue); margin-bottom: 10px; margin-top: 24px; }
+  .logo-text h3:first-child { margin-top: 0; }
+  .logo-text p { font-size: 15px; font-weight: 300; line-height: 1.8; color: rgba(2,19,40,0.7); margin-bottom: 8px; }
+
   /* ── ATHLETE FLIP CARDS ── */
   .athletes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; margin-top: 40px; }
-
   .flip-card { height: 300px; perspective: 1000px; cursor: pointer; }
   .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
   .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
   .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-
   .flip-card-front { background: var(--blue); border: 1px solid rgba(233,189,55,0.15); overflow: hidden; }
   .flip-card-front img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: opacity 0.2s; }
   .flip-card-front:hover img { opacity: 1; }
@@ -115,17 +101,8 @@
     background: linear-gradient(to top, rgba(2,19,40,0.95), transparent);
     font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--cream);
   }
-  .flip-card-front .flip-hint {
-    position: absolute; top: 12px; right: 12px;
-    font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 2px;
-    color: var(--gold); opacity: 0.7; text-transform: uppercase;
-  }
-
-  .flip-card-back {
-    background: var(--blue); border: 2px solid var(--gold);
-    transform: rotateY(180deg); padding: 24px 20px;
-    display: flex; flex-direction: column; justify-content: center;
-  }
+  .flip-card-front .flip-hint { position: absolute; top: 12px; right: 12px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 2px; color: var(--gold); opacity: 0.7; text-transform: uppercase; }
+  .flip-card-back { background: var(--blue); border: 2px solid var(--gold); transform: rotateY(180deg); padding: 24px 20px; display: flex; flex-direction: column; justify-content: center; }
   .flip-card-back .back-name { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; color: var(--gold); margin-bottom: 14px; }
   .flip-card-back .back-stat { margin-bottom: 8px; }
   .flip-card-back .back-stat-label { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(245,240,228,0.4); }
@@ -146,21 +123,59 @@
   .race-reg a:hover { text-decoration: underline; }
   .race-iykyk { display: inline-block; margin-top: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--crimson); border: 1px solid var(--crimson); padding: 2px 8px; opacity: 0.7; }
 
-  /* ── SHOP LOG PIE CHART ── */
-  .chart-wrap { max-width: 520px; margin: 40px auto 0; position: relative; }
-  .chart-legend { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 28px; }
-  .legend-item { display: flex; align-items: center; gap: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 1px; color: var(--blue); }
-  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-
-  /* ── LOGO SECTION ── */
-  .logo-section { background: var(--cream); }
-  .logo-flex { display: flex; gap: 60px; align-items: flex-start; flex-wrap: wrap; margin-top: 40px; }
-  .logo-img-wrap { flex: 0 0 220px; }
-  .logo-img-wrap img { width: 100%; }
-  .logo-text { flex: 1; min-width: 260px; }
-  .logo-text h3 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; color: var(--blue); margin-bottom: 10px; margin-top: 24px; }
-  .logo-text h3:first-child { margin-top: 0; }
-  .logo-text p { font-size: 15px; font-weight: 300; line-height: 1.8; color: rgba(2,19,40,0.7); margin-bottom: 8px; }
+  /* ── SHOP LOG CHART ── */
+  .chart-container {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+  .chart-wrap {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    flex-shrink: 0;
+  }
+  .chart-logo-overlay {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px; height: 80px;
+    object-fit: contain;
+    pointer-events: none;
+  }
+  .chart-labels {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .chart-label-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .chart-label-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .chart-label-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: var(--cream);
+    flex: 1;
+  }
+  .chart-label-pct {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: var(--gold);
+  }
 
   /* ── LOADING ── */
   .loading { text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: rgba(245,240,228,0.3); padding: 40px; }
@@ -183,7 +198,7 @@
     footer { flex-direction: column; text-align: center; }
     .logo-flex { flex-direction: column; }
     .logo-img-wrap { flex: 0 0 auto; width: 180px; }
-    .dropdown-menu { left: auto; right: 0; }
+    .chart-container { flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
@@ -192,15 +207,7 @@
 <nav>
   <a href="index.html" class="nav-logo">THE <span>BLUFF</span></a>
   <ul class="nav-links">
-    <li class="nav-dropdown">
-      <a class="active">About</a>
-      <div class="dropdown-menu">
-        <a href="#origin">About Us</a>
-        <a href="#athletes">Our Athletes</a>
-        <a href="#races">Favorite Races</a>
-        <a href="#shoplog">The Shop Log</a>
-      </div>
-    </li>
+    <li><a href="about.html" class="active">About</a></li>
     <li><a href="index.html#why">Why Us</a></li>
     <li><a href="index.html#services">Services</a></li>
     <li><a href="index.html#contact">Contact</a></li>
@@ -212,8 +219,8 @@
   <h1>About</h1>
 </div>
 
-<!-- ABOUT US -->
-<section class="section" id="origin">
+<!-- 1. THE ORIGIN -->
+<section class="section">
   <div class="section-inner">
     <p class="section-label reveal">The Origin</p>
     <h2 class="section-title reveal">How It Started</h2>
@@ -224,8 +231,15 @@
     <p class="prose reveal">
       Then a friend called the bluff. <em>Why wait for retirement?</em> So here we are. <strong>Bluff Road Bike Co</strong> — doing the basics, done right and done fast, right now out of Greenwood, Indiana.
     </p>
+  </div>
+</section>
 
-    <div class="bikes-grid" style="margin-top:56px;">
+<!-- 2. WHAT I RIDE -->
+<section class="section section-alt">
+  <div class="section-inner">
+    <p class="section-label reveal">In The Garage</p>
+    <h2 class="section-title reveal">What I Ride</h2>
+    <div class="bikes-grid">
       <div class="bike-card reveal">
         <div class="bike-type">Road</div>
         <div class="bike-name">Cervelo S3 Disc</div>
@@ -251,44 +265,8 @@
   </div>
 </section>
 
-<!-- OUR ATHLETES -->
-<section class="section section-alt" id="athletes">
-  <div class="section-inner">
-    <p class="section-label reveal">The Crew</p>
-    <h2 class="section-title reveal">Our Athletes</h2>
-    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:15px;letter-spacing:1px;color:rgba(245,240,228,0.45);margin-bottom:0;" class="reveal">Click a card to flip it.</p>
-    <div class="athletes-grid" id="athletes-grid">
-      <div class="loading">Loading athletes...</div>
-    </div>
-  </div>
-</section>
-
-<!-- FAVORITE RACES -->
-<section class="section" id="races">
-  <div class="section-inner">
-    <p class="section-label reveal">On The Calendar</p>
-    <h2 class="section-title reveal">Favorite Races</h2>
-    <div class="races-grid" id="races-grid">
-      <div class="loading loading-light">Loading races...</div>
-    </div>
-  </div>
-</section>
-
-<!-- THE SHOP LOG -->
-<section class="section section-alt" id="shoplog">
-  <div class="section-inner">
-    <p class="section-label reveal">By The Numbers</p>
-    <h2 class="section-title reveal">The Shop Log</h2>
-    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:15px;letter-spacing:1px;color:rgba(245,240,228,0.45);" class="reveal">Brands that have come through the stand.</p>
-    <div class="chart-wrap reveal">
-      <canvas id="shopChart"></canvas>
-      <div class="chart-legend" id="shopLegend"></div>
-    </div>
-  </div>
-</section>
-
-<!-- NAME & LOGO -->
-<section class="section logo-section" id="identity">
+<!-- 3. THE IDENTITY -->
+<section class="section section-cream">
   <div class="section-inner">
     <p class="section-label reveal">The Identity</p>
     <h2 class="section-title reveal">The Name & Logo</h2>
@@ -309,6 +287,45 @@
   </div>
 </section>
 
+<!-- 4. OUR ATHLETES -->
+<section class="section section-alt">
+  <div class="section-inner">
+    <p class="section-label reveal">The Crew</p>
+    <h2 class="section-title reveal">Our Athletes</h2>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:15px;letter-spacing:1px;color:rgba(245,240,228,0.45);margin-bottom:0;" class="reveal">Click a card to flip it.</p>
+    <div class="athletes-grid" id="athletes-grid">
+      <div class="loading">Loading athletes...</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. FAVORITE RACES -->
+<section class="section">
+  <div class="section-inner">
+    <p class="section-label reveal">On The Calendar</p>
+    <h2 class="section-title reveal">Favorite Races</h2>
+    <div class="races-grid" id="races-grid">
+      <div class="loading loading-light">Loading races...</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. SHOP LOG -->
+<section class="section section-alt">
+  <div class="section-inner">
+    <p class="section-label reveal">By The Numbers</p>
+    <h2 class="section-title reveal">The Shop Log</h2>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-size:15px;letter-spacing:1px;color:rgba(245,240,228,0.45);" class="reveal">Brands that have come through the stand.</p>
+    <div class="chart-container reveal">
+      <div class="chart-wrap">
+        <canvas id="shopChart"></canvas>
+        <img src="logo.png" class="chart-logo-overlay" alt="BRBC" />
+      </div>
+      <div class="chart-labels" id="shopLabels"></div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="footer-brand">BLUFF ROAD <span>BIKE CO LLC</span></div>
   <div class="footer-note">bluffroadbikeco.com &nbsp;·&nbsp; Greenwood, Indiana</div>
@@ -321,12 +338,10 @@
   const SHOPLOG_GID  = '1201448514';
   const ATHLETES_GID = '1591224369';
 
-  // Parse CSV text into array of objects
   function parseCSV(text) {
     const lines = text.trim().split('\n');
     const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g,''));
     return lines.slice(1).map(line => {
-      // Handle quoted fields
       const values = [];
       let cur = '', inQ = false;
       for (let i = 0; i < line.length; i++) {
@@ -342,7 +357,6 @@
     }).filter(r => Object.values(r).some(v => v));
   }
 
-  // Convert Google Drive share link to direct image URL
   function driveUrl(url) {
     if (!url) return '';
     const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -354,6 +368,20 @@
     const res = await fetch(`${BASE}&gid=${gid}`);
     return parseCSV(await res.text());
   }
+
+  // Theme colors for chart — on-brand palette
+  const CHART_COLORS = [
+    '#E9BD37', // gold
+    '#A70D37', // crimson
+    '#2a5298', // mid blue
+    '#c0832a', // dark gold
+    '#6b1525', // dark crimson
+    '#4a7fd4', // light blue
+    '#f0cc55', // light gold
+    '#e05a7a', // pink crimson
+    '#1a3a6e', // deep blue
+    '#d4a017', // amber
+  ];
 
   // ── ATHLETES ──
   async function loadAthletes() {
@@ -415,7 +443,6 @@
           </div>`;
         grid.appendChild(card);
       });
-      // Re-observe new cards
       document.querySelectorAll('.race-card.reveal').forEach(el => observer.observe(el));
     } catch(e) {
       document.getElementById('races-grid').innerHTML = '<div class="loading loading-light">Could not load races.</div>';
@@ -423,10 +450,6 @@
   }
 
   // ── SHOP LOG ──
-  const CHART_COLORS = [
-    '#E9BD37','#A70D37','#4a90d9','#2ecc71','#e67e22','#9b59b6','#1abc9c','#e74c3c','#f39c12','#3498db'
-  ];
-
   async function loadShopLog() {
     try {
       const data = await fetchCSV(SHOPLOG_GID);
@@ -434,6 +457,7 @@
       const labels = data.map(r => r['Brand'] || r[Object.keys(r)[0]]);
       const counts = data.map(r => parseInt(r['Count'] || r[Object.keys(r)[1]]) || 0);
       const total = counts.reduce((a,b) => a+b, 0);
+      const colors = CHART_COLORS.slice(0, labels.length);
 
       const ctx = document.getElementById('shopChart').getContext('2d');
       new Chart(ctx, {
@@ -442,21 +466,22 @@
           labels,
           datasets: [{
             data: counts,
-            backgroundColor: CHART_COLORS.slice(0, labels.length),
+            backgroundColor: colors,
             borderColor: '#021328',
-            borderWidth: 3,
+            borderWidth: 4,
             hoverOffset: 8
           }]
         },
         options: {
           responsive: true,
+          maintainAspectRatio: true,
           plugins: {
             legend: { display: false },
             tooltip: {
               callbacks: {
                 label: ctx => {
                   const pct = ((ctx.parsed / total) * 100).toFixed(1);
-                  return ` ${ctx.label}: ${ctx.parsed} (${pct}%)`;
+                  return ` ${ctx.label}: ${pct}%`;
                 }
               },
               backgroundColor: '#021328',
@@ -466,19 +491,21 @@
               borderWidth: 1
             }
           },
-          cutout: '60%'
+          cutout: '62%'
         }
       });
 
-      // Custom legend
-      const legend = document.getElementById('shopLegend');
+      // Side labels
+      const labelsEl = document.getElementById('shopLabels');
       labels.forEach((label, i) => {
         const pct = total > 0 ? ((counts[i]/total)*100).toFixed(1) : 0;
-        legend.innerHTML += `
-          <div class="legend-item">
-            <div class="legend-dot" style="background:${CHART_COLORS[i]}"></div>
-            ${label} — ${pct}%
-          </div>`;
+        const item = document.createElement('div');
+        item.className = 'chart-label-item';
+        item.innerHTML = `
+          <div class="chart-label-dot" style="background:${colors[i]}"></div>
+          <div class="chart-label-name">${label}</div>
+          <div class="chart-label-pct">${pct}%</div>`;
+        labelsEl.appendChild(item);
       });
     } catch(e) {
       console.error('Shop log error:', e);
@@ -491,7 +518,6 @@
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // ── INIT ──
   loadAthletes();
   loadRaces();
   loadShopLog();
