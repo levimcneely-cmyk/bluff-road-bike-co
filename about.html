@@ -4,7 +4,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — Bluff Road Bike Co</title>
+<title>About — Bluff Road Bike Co | Greenwood, Indiana</title>
+<meta name="description" content="Learn about Bluff Road Bike Co — a local road bike repair shop in Greenwood, Indiana. Meet the riders, see the bikes, and learn the story behind The Bluff.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.bluffroadbikeco.com/about.html">
+<meta property="og:title" content="About — Bluff Road Bike Co | Greenwood, Indiana">
+<meta property="og:description" content="The story behind The Bluff — local bike repair done right in Greenwood, Indiana.">
+<meta property="og:url" content="https://www.bluffroadbikeco.com/about.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://www.bluffroadbikeco.com/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -38,6 +46,31 @@
     color: rgba(245,240,228,0.7); text-decoration: none; transition: color 0.2s;
   }
   .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+  .nav-hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: pointer; padding: 4px; background: none; border: none;
+  }
+  .nav-hamburger span { display: block; width: 24px; height: 2px; background: var(--cream); transition: all 0.3s ease; }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .nav-mobile {
+    display: none; position: fixed; top: 64px; left: 0; right: 0;
+    background: var(--blue); border-bottom: 2px solid var(--crimson);
+    z-index: 99; flex-direction: column; padding: 8px 0 16px;
+  }
+  .nav-mobile.open { display: flex; }
+  .nav-mobile a {
+    font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    font-size: 15px; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(245,240,228,0.7); text-decoration: none;
+    padding: 14px 32px; border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: color 0.2s, background 0.2s;
+  }
+  .nav-mobile a:hover { color: var(--gold); background: rgba(255,255,255,0.03); }
+  .nav-mobile a:last-child { border-bottom: none; }
 
   /* ── PAGE HEADER ── */
   .page-header {
@@ -193,7 +226,8 @@
 
   @media (max-width: 600px) {
     nav { padding: 0 20px; }
-    .nav-links { gap: 16px; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
     .section { padding: 64px 20px; }
     footer { flex-direction: column; text-align: center; }
     .logo-flex { flex-direction: column; }
@@ -212,7 +246,17 @@
     <li><a href="index.html#services">Services</a></li>
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="nav-mobile" id="nav-mobile">
+  <a href="about.html">About</a>
+  <a href="index.html#why">Why Us</a>
+  <a href="index.html#services">Services</a>
+  <a href="index.html#contact">Contact</a>
+</div>
 
 <div class="page-header">
   <p class="page-header-label">Bluff Road Bike Co</p>
@@ -528,6 +572,20 @@
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('nav-mobile');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+  });
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileNav.classList.remove('open');
+    });
+  });
 
   loadAthletes();
   loadRaces();
