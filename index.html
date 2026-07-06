@@ -391,6 +391,21 @@
   }
   .contact-desc strong { color: var(--gold); font-weight: 600; }
 
+  .contact-address {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: rgba(245,240,228,0.35);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .contact-address a {
+    color: rgba(245,240,228,0.35);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .contact-address a:hover { color: var(--gold); }
+
   /* Form */
   .contact-form-wrap {
     background: white;
@@ -556,7 +571,6 @@
   </button>
 </nav>
 
-<!-- Mobile nav drawer -->
 <div class="nav-mobile" id="nav-mobile">
   <a href="about.html">About</a>
   <a href="#why">Why Us</a>
@@ -657,18 +671,14 @@
     <h2 class="section-title reveal">Contact</h2>
     <div class="contact-box reveal">
       <div class="contact-name">Levi</div>
-      <div class="contact-phone"><a href="tel:+13177217339">(317) 721-7339</a></div>
-      <div class="contact-divider">
-        <div class="contact-divider-line"></div>
-        <div class="contact-divider-star">★</div>
-        <div class="contact-divider-line"></div>
+      <div class="contact-phone"><a href="sms:+13177217339">(317) 721-7339</a></div>
+      <div class="contact-address">
+        <a href="https://maps.google.com/?q=6136+Bluff+Acres+Dr,+Greenwood,+IN+46143" target="_blank">6136 Bluff Acres Dr, Greenwood, IN 46143</a>
       </div>
-      <p class="contact-desc">
-        Based in <strong>Greenwood, Indiana</strong>.<br>
-        Text preferred. If you call, leave a voicemail — unknown numbers may be ignored.<br>
-        <a href="mailto:bluffroadbikeco@gmail.com" style="color:var(--gold);">bluffroadbikeco@gmail.com</a><br><br>
-        <a href='https://venmo.com/bluffroadbikeco' target='_blank' style='display:inline-block; margin-top:4px; font-family:Barlow Condensed, sans-serif; font-weight:600; font-size:13px; letter-spacing:3px; text-transform:uppercase; background:var(--gold); color:var(--blue); padding:12px 28px; text-decoration:none; transition:background 0.2s;'>Keep the wheels turning — Venmo @bluffroadbikeco</a>
-      </p>
+      <div class="contact-address" style="margin-bottom:24px;">
+        <a href="mailto:bluffroadbikeco@gmail.com" style="color:rgba(245,240,228,0.35);">bluffroadbikeco@gmail.com</a>
+      </div>
+      <a href='https://venmo.com/bluffroadbikeco' target='_blank' style='display:inline-block; font-family:Barlow Condensed, sans-serif; font-weight:600; font-size:13px; letter-spacing:3px; text-transform:uppercase; background:var(--gold); color:var(--blue); padding:12px 28px; text-decoration:none; transition:background 0.2s;'>Keep the wheels turning — Venmo @bluffroadbikeco</a>
     </div>
 
     <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-bottom: 32px;">
@@ -716,7 +726,6 @@
   }, { threshold: 0.12 });
   reveals.forEach(el => observer.observe(el));
 
-  // Hamburger menu
   const hamburger = document.getElementById('hamburger');
   const mobileNav = document.getElementById('nav-mobile');
   hamburger.addEventListener('click', () => {
