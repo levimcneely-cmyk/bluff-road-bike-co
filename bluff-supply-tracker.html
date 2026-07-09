@@ -1,0 +1,1369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Supply Trends">
+<meta name="theme-color" content="#171F28">
+<title>Bluff Road Bike Co — Supply Trends</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #EDEAE2;
+    --ink-dim: #A9AD9F;
+    --navy: #171F28;
+    --navy-panel: #1F2A35;
+    --navy-panel-2: #263443;
+    --steel: #3A4956;
+    --orange: #E36414;
+    --orange-dim: #8f4211;
+    --green: #4C8A5A;
+    --amber: #D1A23C;
+    --rust: #B8433D;
+    --font-display: 'Oswald', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--navy);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    padding: 24px;
+    line-height: 1.4;
+  }
+
+  .wrap { max-width: 1120px; margin: 0 auto; }
+
+  /* ---- Config banner ---- */
+  .config-banner {
+    background: var(--rust);
+    color: #fff;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 12.5px;
+    display: none;
+  }
+  .config-banner code { background: rgba(0,0,0,0.25); padding: 1px 5px; border-radius: 2px; }
+
+  /* ---- Ticket header ---- */
+  .ticket {
+    background: var(--navy-panel);
+    border: 1px dashed var(--steel);
+    border-radius: 4px;
+    padding: 20px 28px;
+    margin-bottom: 24px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .ticket::before, .ticket::after {
+    content: "";
+    position: absolute;
+    width: 14px; height: 14px;
+    background: var(--navy);
+    border: 1px dashed var(--steel);
+    border-radius: 50%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .ticket::before { left: -8px; }
+  .ticket::after { right: -8px; }
+  .ticket-left .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin: 0 0 6px 0;
+  }
+  .ticket-left h1 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 30px;
+    letter-spacing: 0.02em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .ticket-left .sub {
+    color: var(--ink-dim);
+    font-size: 12.5px;
+    margin-top: 4px;
+  }
+  .ticket-right {
+    text-align: right;
+    font-size: 12px;
+    color: var(--ink-dim);
+  }
+  .ticket-right .stamp {
+    display: inline-block;
+    border: 2px solid var(--orange);
+    color: var(--orange);
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 3px;
+    transform: rotate(-3deg);
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  /* ---- Tabs ---- */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--steel);
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--ink-dim);
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 13px;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+  }
+  .tab-btn:hover { color: var(--ink); }
+  .tab-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  h2.section-title {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 28px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--steel);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  h2.section-title span.hint { color: var(--ink-dim); font-size: 11px; text-transform: none; letter-spacing: 0; font-weight: 400; }
+  h2.section-title:first-child { margin-top: 0; }
+
+  .empty-note {
+    color: var(--ink-dim);
+    font-size: 13px;
+    padding: 20px 4px;
+  }
+
+  /* ---- Summary cards ---- */
+  .summary-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .summary-card {
+    background: var(--navy-panel);
+    border: 1px solid var(--steel);
+    border-radius: 4px;
+    padding: 12px 14px;
+  }
+  .summary-card .num {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--orange);
+    line-height: 1;
+  }
+  .summary-card .label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-dim);
+    margin-top: 6px;
+  }
+
+  /* ---- Controls ---- */
+  .control-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  select.metric-select {
+    background: var(--navy-panel-2);
+    border: 1px solid var(--steel);
+    color: var(--ink);
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+  }
+
+  /* ---- Bar chart ---- */
+  .chart-wrap {
+    background: var(--navy-panel);
+    border: 1px solid var(--steel);
+    border-radius: 4px;
+    padding: 18px 18px 10px 18px;
+  }
+  .bar-chart { width: 100%; height: 200px; display: flex; align-items: flex-end; gap: 6px; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; }
+  .bar-rect {
+    width: 100%;
+    max-width: 42px;
+    background: var(--orange);
+    border-radius: 3px 3px 0 0;
+    transition: background .15s;
+    position: relative;
+  }
+  .bar-rect:hover { background: #f07226; }
+  .bar-rect .bar-val {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: var(--ink-dim);
+    white-space: nowrap;
+  }
+  .bar-label {
+    font-size: 10px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  /* ---- Heatmap ---- */
+  .heatmap-wrap { overflow-x: auto; }
+  table.heatmap { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  table.heatmap th {
+    text-align: left;
+    padding: 6px 8px;
+    color: var(--ink-dim);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--steel);
+  }
+  table.heatmap th.month-col { text-align: center; width: 32px; }
+  table.heatmap td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #232f3b;
+    white-space: nowrap;
+  }
+  table.heatmap td.item-name { color: var(--ink); font-weight: 500; max-width: 220px; overflow: hidden; text-overflow: ellipsis; }
+  table.heatmap td.month-cell { text-align: center; color: var(--ink-dim); font-size: 10.5px; }
+  table.heatmap td.total-cell { text-align: right; color: var(--ink-dim); font-weight: 600; }
+
+  /* ---- Category bars ---- */
+  .cat-row { display: grid; grid-template-columns: 140px 1fr 50px; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 12px; }
+  .cat-row.pace-row { grid-template-columns: 220px 1fr 90px; }
+  .cat-track { background: var(--navy-panel-2); border-radius: 3px; height: 14px; overflow: hidden; }
+  .cat-fill { height: 100%; background: var(--orange); border-radius: 3px; }
+  .cat-val { text-align: right; color: var(--ink-dim); font-size: 11px; }
+
+  /* ---- Top items list ---- */
+  .top-items-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .top-items-table th {
+    text-align: left; text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.05em;
+    color: var(--ink-dim); padding: 8px 10px; border-bottom: 1px solid var(--steel);
+  }
+  .top-items-table td { padding: 8px 10px; border-bottom: 1px solid #2a3542; }
+  .top-items-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ---- Form ---- */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 10px;
+    align-items: end;
+  }
+  @media (max-width: 720px) { .form-grid { grid-template-columns: 1fr 1fr; } }
+
+  label {
+    display: block;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-dim);
+    margin-bottom: 4px;
+  }
+  input, select {
+    width: 100%;
+    background: var(--navy-panel-2);
+    border: 1px solid var(--steel);
+    color: var(--ink);
+    padding: 8px 10px;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  input:focus, select:focus {
+    outline: 2px solid var(--orange);
+    outline-offset: 1px;
+  }
+  button.primary {
+    background: var(--orange);
+    border: none;
+    color: #1C1005;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 9px 16px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  button.primary:hover { background: #f07226; }
+  button.primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  button.ghost {
+    background: transparent;
+    border: 1px solid var(--steel);
+    color: var(--ink-dim);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  button.ghost:hover { color: var(--ink); border-color: var(--ink-dim); }
+  button.ghost.active-toggle { color: var(--orange); border-color: var(--orange); }
+
+  /* ---- Import ---- */
+  .import-box {
+    border: 1px dashed var(--steel);
+    border-radius: 4px;
+    padding: 18px;
+    background: var(--navy-panel);
+  }
+  .import-box p { color: var(--ink-dim); font-size: 12.5px; margin: 0 0 12px 0; }
+  .import-box code {
+    background: var(--navy-panel-2);
+    padding: 1px 5px;
+    border-radius: 2px;
+    color: var(--amber);
+  }
+  .import-box label.checkbox-label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; text-transform: none; letter-spacing: 0;
+    color: var(--ink-dim); margin-bottom: 0; cursor: pointer;
+  }
+  .import-box input[type="checkbox"] { width: auto; }
+  textarea {
+    width: 100%;
+    min-height: 110px;
+    background: var(--navy-panel-2);
+    border: 1px solid var(--steel);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 10px;
+    border-radius: 3px;
+    resize: vertical;
+  }
+  .import-actions { display: flex; gap: 8px; margin-top: 10px; align-items: center; flex-wrap: wrap; }
+  .import-status { font-size: 12px; color: var(--ink-dim); }
+  .import-warn { color: var(--amber); }
+  .import-error { color: var(--rust); }
+
+  /* ---- Table ---- */
+  .table-wrap { overflow-x: auto; }
+  table.history { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  table.history th {
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 10.5px;
+    letter-spacing: 0.05em;
+    color: var(--ink-dim);
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--steel);
+    white-space: nowrap;
+  }
+  table.history td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #2a3542;
+    white-space: nowrap;
+  }
+  table.history tr:hover td { background: rgba(255,255,255,0.02); }
+  td.del { cursor: pointer; color: var(--ink-dim); text-align: center; }
+  td.del:hover { color: var(--rust); }
+
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .toolbar input[type="search"] { max-width: 240px; }
+
+  .loading { color: var(--ink-dim); font-size: 13px; padding: 16px 0; }
+
+  footer {
+    margin-top: 32px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--steel);
+    color: var(--ink-dim);
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* ==================== MOBILE ==================== */
+  @media (max-width: 640px) {
+    body { padding: 12px; }
+
+    .ticket {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 16px 18px;
+    }
+    .ticket::before, .ticket::after { display: none; }
+    .ticket-left h1 { font-size: 22px; }
+    .ticket-right { text-align: left; }
+
+    /* Tabs scroll horizontally instead of wrapping into a cramped grid */
+    .tabs {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex: 0 0 auto;
+      padding: 10px 12px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    h2.section-title {
+      font-size: 14px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .summary-row { grid-template-columns: repeat(2, 1fr); }
+    .summary-card .num { font-size: 19px; }
+
+    /* Monthly bar chart: keep bars readable by scrolling horizontally
+       instead of squeezing 12 columns into a narrow screen */
+    .chart-wrap { padding: 14px 10px 8px 10px; }
+    .bar-chart {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      justify-content: flex-start;
+      gap: 10px;
+    }
+    .bar-col { flex: 0 0 34px; }
+
+    .cat-row { grid-template-columns: 92px 1fr 40px; font-size: 11px; gap: 6px; }
+    .cat-row.pace-row { grid-template-columns: 1fr; }
+    .cat-row.pace-row .cat-val { text-align: left; margin-top: 2px; }
+
+    /* Forms: single column, full-width controls and buttons */
+    .form-grid { grid-template-columns: 1fr; }
+    .form-grid > div { grid-column: auto !important; }
+    button.primary { width: 100%; }
+
+    .toolbar { flex-direction: column; align-items: stretch; }
+    .toolbar input[type="search"] { max-width: none; }
+
+    /* Tables: allow momentum scrolling and shrink a touch */
+    .table-wrap, .heatmap-wrap { -webkit-overflow-scrolling: touch; }
+    table.history, table.heatmap, .top-items-table { font-size: 11.5px; }
+    table.history th, table.history td,
+    table.heatmap th, table.heatmap td,
+    .top-items-table th, .top-items-table td { padding: 6px 7px; }
+
+    .import-actions { flex-direction: column; align-items: stretch; }
+    .import-actions input[type="file"] { width: 100%; }
+
+    footer { flex-direction: column; align-items: flex-start; }
+    footer button.ghost { width: 100%; }
+  }
+
+  @media (max-width: 380px) {
+    .ticket-left h1 { font-size: 19px; }
+    .summary-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="config-banner" id="configBanner">
+    ⚠ Not connected yet — open this file and set <code>APPS_SCRIPT_URL</code> and <code>SHARED_SECRET</code>
+    near the top of the &lt;script&gt; tag to point at your deployed Google Apps Script Web App.
+  </div>
+
+  <div class="ticket">
+    <div class="ticket-left">
+      <p class="eyebrow">Bluff Road Bike Co · Shop Ops</p>
+      <h1>Supply Trends</h1>
+      <div class="sub">What you're ordering, how much, and when — backed by a private Google Sheet.</div>
+    </div>
+    <div class="ticket-right">
+      <div class="stamp" id="entryCountStamp">0 ENTRIES</div>
+      <div id="lastUpdated">no orders logged yet</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="trends">Trends</button>
+    <button class="tab-btn" data-tab="log">Log an Order</button>
+    <button class="tab-btn" data-tab="import">Import from Amazon</button>
+    <button class="tab-btn" data-tab="history">Order History</button>
+  </div>
+
+  <!-- TRENDS -->
+  <div class="panel active" id="panel-trends">
+    <div id="trendsLoading" class="loading">Loading order data…</div>
+    <div id="trendsEmpty" class="empty-note" style="display:none;">
+      Nothing to analyze yet. Log a few orders or import your Amazon order history — trends get more useful
+      the more months of data you have behind them.
+    </div>
+
+    <div id="trendsContent" style="display:none;">
+
+      <div class="summary-row" id="summaryCards"></div>
+
+      <div class="chart-wrap" style="margin-top:10px;" id="paceCard"></div>
+
+      <h2 class="section-title">
+        Orders by month <span class="hint">combined across all years — reveals seasonality</span>
+        <div class="control-row">
+          <select class="metric-select" id="monthlyMetric">
+            <option value="qty">Total quantity</option>
+            <option value="orders">Order count</option>
+            <option value="cost">Total spend</option>
+          </select>
+        </div>
+      </h2>
+      <div class="chart-wrap">
+        <div class="bar-chart" id="monthlyChart"></div>
+      </div>
+
+      <h2 class="section-title">Spend &amp; volume by category</h2>
+      <div class="chart-wrap" id="categoryChart"></div>
+
+      <h2 class="section-title">
+        Item × month pattern <span class="hint">top items by total quantity, shaded by how much ships each month</span>
+      </h2>
+      <div class="heatmap-wrap">
+        <table class="heatmap" id="heatmapTable"></table>
+      </div>
+
+      <h2 class="section-title">
+        Top items
+        <div class="control-row">
+          <button class="ghost active-toggle" data-sort="qty">By quantity</button>
+          <button class="ghost" data-sort="orders">By order count</button>
+          <button class="ghost" data-sort="cost">By spend</button>
+        </div>
+      </h2>
+      <div class="table-wrap">
+        <table class="top-items-table" id="topItemsTable"></table>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LOG -->
+  <div class="panel" id="panel-log">
+    <h2 class="section-title">Log an order <span class="hint">one line item at a time</span></h2>
+    <div class="form-grid">
+      <div>
+        <label for="f-name">Item</label>
+        <input type="text" id="f-name" placeholder="e.g. Park Tool CT-3.3 chain tool">
+      </div>
+      <div>
+        <label for="f-qty">Quantity</label>
+        <input type="number" id="f-qty" value="1" min="1">
+      </div>
+      <div>
+        <label for="f-cat">Category</label>
+        <select id="f-cat">
+          <option>Parts</option>
+          <option>Tools</option>
+          <option>Shop Supplies</option>
+          <option>Packaging</option>
+          <option>Cleaning</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label for="f-date">Order date</label>
+        <input type="date" id="f-date">
+      </div>
+    </div>
+    <div class="form-grid" style="margin-top:10px;">
+      <div>
+        <label for="f-cost">Total cost (optional)</label>
+        <input type="number" id="f-cost" placeholder="0.00" step="0.01" min="0">
+      </div>
+      <div style="grid-column: span 2; align-self:end;">
+        <label for="f-notes">Notes (optional)</label>
+        <input type="text" id="f-notes" placeholder="brand, ASIN, supplier note...">
+      </div>
+      <div>
+        <button class="primary" id="addOrderBtn" style="width:100%;">Add to log</button>
+      </div>
+    </div>
+    <div id="logStatus" class="import-status" style="margin-top:10px;"></div>
+  </div>
+
+  <!-- IMPORT -->
+  <div class="panel" id="panel-import">
+    <h2 class="section-title">Import Amazon order history</h2>
+    <div class="import-box">
+      <p>
+        From your Amazon Business account: <b>Order History Reports → generate a CSV → download it</b>, then paste
+        the raw CSV contents below (or drop the file in). Built for Amazon Business's itemized order report —
+        columns like <code>Title</code>, <code>Quantity</code>, <code>Order Date</code>, <code>Item Total</code>,
+        <code>Order Status</code>, and <code>Order ID</code> are detected automatically, whichever report variant
+        you export.
+      </p>
+      <textarea id="csvInput" placeholder="Paste CSV contents here..."></textarea>
+      <div class="import-actions">
+        <input type="file" id="csvFile" accept=".csv,text/csv">
+        <button class="ghost" id="parseCsvBtn">Preview import</button>
+      </div>
+      <label class="checkbox-label" style="margin-top:10px;">
+        <input type="checkbox" id="skipCancelled" checked>
+        Skip cancelled / returned line items (based on Order Status column, when present)
+      </label>
+      <div class="import-status" id="importStatus"></div>
+    </div>
+    <div id="importPreviewWrap" style="display:none;">
+      <h2 class="section-title">Preview <span class="hint" id="previewCount"></span></h2>
+      <div class="table-wrap">
+        <table class="history" id="previewTable">
+          <thead><tr><th>Item</th><th>Qty</th><th>Date</th><th>Cost</th><th>Notes</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="import-actions">
+        <button class="primary" id="confirmImportBtn">Add these to the log</button>
+        <button class="ghost" id="cancelImportBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="panel" id="panel-history">
+    <div class="toolbar">
+      <h2 class="section-title" style="margin:0; border:none;">Order history</h2>
+      <input type="search" id="searchInput" placeholder="Filter by item...">
+    </div>
+    <div class="table-wrap" style="margin-top:12px;">
+      <table class="history">
+        <thead>
+          <tr><th>Item</th><th>Category</th><th>Qty</th><th>Date</th><th>Cost</th><th>Notes</th><th></th></tr>
+        </thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+    </div>
+    <div id="historyEmpty" class="empty-note" style="display:none;">No orders logged yet.</div>
+  </div>
+
+  <footer>
+    <span id="footerNote">Data stored in your private Google Sheet.</span>
+    <button class="ghost" id="resetBtn">Clear all data</button>
+  </footer>
+
+</div>
+
+<script>
+/* ============================================================
+   CONFIG — fill these in after deploying the Apps Script Web App
+   ============================================================ */
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzPOoKPASDZf3ffL4jdCdo7VGVK0-PBjYT5m31ScZUbDoCkMN3NyDC88liTjJFVyb8FzA/exec';
+const SHARED_SECRET   = '753159';      // paste the exact SECRET value you set in the Apps Script code
+/* ============================================================ */
+
+let orders = []; // {id, name, qty, category, date, cost, notes}
+let topItemsSort = 'qty';
+const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const CATEGORIES = ['Parts','Tools','Shop Supplies','Packaging','Cleaning','Other'];
+
+function isConfigured() {
+  return APPS_SCRIPT_URL && APPS_SCRIPT_URL.indexOf('PASTE_YOUR') === -1 &&
+         SHARED_SECRET && SHARED_SECRET.indexOf('PASTE_YOUR') === -1;
+}
+
+function uid() { return 'o_' + Math.random().toString(36).slice(2, 10) + Date.now().toString(36); }
+
+// ---- Backend calls ----
+async function apiGet() {
+  const url = APPS_SCRIPT_URL + '?secret=' + encodeURIComponent(SHARED_SECRET);
+  const res = await fetch(url);
+  return res.json();
+}
+
+async function apiPost(payload) {
+  const res = await fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight to Apps Script
+    body: JSON.stringify(Object.assign({ secret: SHARED_SECRET }, payload))
+  });
+  return res.json();
+}
+
+async function loadOrders() {
+  if (!isConfigured()) { orders = []; return; }
+  try {
+    const data = await apiGet();
+    if (data.error) { console.error('API error:', data.error); orders = []; return; }
+    orders = (data.orders || []).map(o => ({
+      id: o.id,
+      name: o.name,
+      qty: Number(o.qty) || 1,
+      category: o.category || 'Other',
+      date: o.date,
+      cost: o.cost !== '' && o.cost !== undefined ? Number(o.cost) : null,
+      notes: o.notes || ''
+    }));
+  } catch (e) {
+    console.error('load failed', e);
+    orders = [];
+  }
+}
+
+async function addOrders(newOrders) {
+  await apiPost({ action: 'add', orders: newOrders });
+  await loadOrders();
+}
+
+async function deleteOrder(id) {
+  await apiPost({ action: 'delete', id });
+  await loadOrders();
+}
+
+async function clearAll() {
+  await apiPost({ action: 'clear' });
+  await loadOrders();
+}
+
+function normalizeName(name) {
+  return name.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  const dt = new Date(d + 'T00:00:00');
+  if (isNaN(dt)) return d;
+  return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function todayStr() {
+  const d = new Date();
+  return d.toISOString().slice(0, 10);
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function monthIndexOf(dateStr) {
+  const dt = new Date(dateStr + 'T00:00:00');
+  if (isNaN(dt)) return null;
+  return dt.getMonth();
+}
+
+// ---- Trend computations ----
+function computeMonthlyTotals() {
+  const totals = MONTH_NAMES.map(() => ({ qty: 0, orders: 0, cost: 0 }));
+  orders.forEach(o => {
+    const mi = monthIndexOf(o.date);
+    if (mi === null) return;
+    totals[mi].qty += Number(o.qty || 1);
+    totals[mi].orders += 1;
+    totals[mi].cost += Number(o.cost || 0);
+  });
+  return totals;
+}
+
+function computeCategoryTotals() {
+  const totals = {};
+  CATEGORIES.forEach(c => totals[c] = { qty: 0, cost: 0, orders: 0 });
+  orders.forEach(o => {
+    const cat = CATEGORIES.includes(o.category) ? o.category : 'Other';
+    totals[cat].qty += Number(o.qty || 1);
+    totals[cat].cost += Number(o.cost || 0);
+    totals[cat].orders += 1;
+  });
+  return totals;
+}
+
+function computeItemStats() {
+  const groups = {};
+  orders.forEach(o => {
+    const key = normalizeName(o.name);
+    if (!groups[key]) groups[key] = { displayName: o.name, entries: [] };
+    groups[key].entries.push(o);
+  });
+
+  return Object.values(groups).map(g => {
+    const sorted = g.entries.slice().sort((a, b) => a.date.localeCompare(b.date));
+    const totalQty = sorted.reduce((s, o) => s + Number(o.qty || 1), 0);
+    const totalCost = sorted.reduce((s, o) => s + Number(o.cost || 0), 0);
+    const monthly = new Array(12).fill(0);
+    sorted.forEach(o => {
+      const mi = monthIndexOf(o.date);
+      if (mi !== null) monthly[mi] += Number(o.qty || 1);
+    });
+    return {
+      name: g.displayName,
+      orderCount: sorted.length,
+      totalQty,
+      totalCost,
+      firstDate: sorted[0].date,
+      lastDate: sorted[sorted.length - 1].date,
+      monthly
+    };
+  });
+}
+
+// ---- Rendering ----
+function renderSummaryCards() {
+  const totalOrders = orders.length;
+  const totalQty = orders.reduce((s, o) => s + Number(o.qty || 1), 0);
+  const totalCost = orders.reduce((s, o) => s + Number(o.cost || 0), 0);
+  const uniqueItems = new Set(orders.map(o => normalizeName(o.name))).size;
+  const dates = orders.map(o => o.date).filter(Boolean).sort();
+  const span = dates.length ? `${fmtDate(dates[0])} – ${fmtDate(dates[dates.length - 1])}` : '—';
+
+  document.getElementById('summaryCards').innerHTML = `
+    <div class="summary-card"><div class="num">${totalOrders}</div><div class="label">Line items logged</div></div>
+    <div class="summary-card"><div class="num">${totalQty}</div><div class="label">Total units ordered</div></div>
+    <div class="summary-card"><div class="num">${uniqueItems}</div><div class="label">Distinct items</div></div>
+    <div class="summary-card"><div class="num">$${totalCost.toFixed(0)}</div><div class="label">Total logged spend</div></div>
+    <div class="summary-card"><div class="num" style="font-size:14px; padding-top:4px;">${span}</div><div class="label">Date range covered</div></div>
+  `;
+
+  renderPaceCard();
+}
+
+// Distributor pricing (QBP, J&B, Bell Wholesale, etc.) typically becomes worth
+// setting up around this order volume. Adjust freely if your own number changes.
+const DISTRIBUTOR_THRESHOLD = 30;
+
+function renderPaceCard() {
+  const wrap = document.getElementById('paceCard');
+  if (!wrap) return;
+
+  const now = new Date();
+  const cutoff = new Date(now.getTime() - 30 * 86400000);
+  const trailing30 = orders.filter(o => {
+    const d = new Date(o.date + 'T00:00:00');
+    return !isNaN(d) && d >= cutoff && d <= now;
+  }).length;
+
+  const pct = Math.min(100, Math.round((trailing30 / DISTRIBUTOR_THRESHOLD) * 100));
+  const isClose = trailing30 >= DISTRIBUTOR_THRESHOLD * 0.8;
+
+  wrap.innerHTML = `
+    <div class="cat-row pace-row">
+      <div>Line items, trailing 30 days</div>
+      <div class="cat-track"><div class="cat-fill" style="width:${pct}%; ${isClose ? 'background: var(--amber);' : ''}"></div></div>
+      <div class="cat-val">${trailing30} / ${DISTRIBUTOR_THRESHOLD}</div>
+    </div>
+    <div style="font-size:11px; color: var(--ink-dim); margin-top:4px;">
+      ${isClose
+        ? `Getting close to ${DISTRIBUTOR_THRESHOLD}/mo — worth pricing out a wholesale distributor account (QBP, J&B, Bell) against Amazon on your top items.`
+        : `Threshold for considering a wholesale distributor account instead of Amazon, based on your own ${DISTRIBUTOR_THRESHOLD}/mo estimate.`}
+    </div>
+  `;
+}
+
+function renderMonthlyChart() {
+  const metric = document.getElementById('monthlyMetric').value;
+  const totals = computeMonthlyTotals();
+  const values = totals.map(t => metric === 'cost' ? t.cost : (metric === 'orders' ? t.orders : t.qty));
+  const max = Math.max(...values, 1);
+
+  const chart = document.getElementById('monthlyChart');
+  chart.innerHTML = MONTH_NAMES.map((m, i) => {
+    const v = values[i];
+    const heightPct = Math.max(2, Math.round((v / max) * 100));
+    const displayVal = metric === 'cost' ? '$' + v.toFixed(0) : v;
+    return `
+      <div class="bar-col">
+        <div class="bar-rect" style="height:${heightPct}%;">
+          ${v > 0 ? `<div class="bar-val">${displayVal}</div>` : ''}
+        </div>
+        <div class="bar-label">${m}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderCategoryChart() {
+  const totals = computeCategoryTotals();
+  const maxQty = Math.max(...Object.values(totals).map(t => t.qty), 1);
+  const wrap = document.getElementById('categoryChart');
+
+  const rows = CATEGORIES
+    .map(c => ({ cat: c, ...totals[c] }))
+    .filter(r => r.orders > 0)
+    .sort((a, b) => b.qty - a.qty);
+
+  if (rows.length === 0) {
+    wrap.innerHTML = '<div class="empty-note">No category data yet.</div>';
+    return;
+  }
+
+  wrap.innerHTML = rows.map(r => `
+    <div class="cat-row">
+      <div>${escapeHtml(r.cat)}</div>
+      <div class="cat-track"><div class="cat-fill" style="width:${Math.round((r.qty / maxQty) * 100)}%;"></div></div>
+      <div class="cat-val">${r.qty}u</div>
+    </div>
+  `).join('');
+}
+
+function renderHeatmap() {
+  const stats = computeItemStats()
+    .slice()
+    .sort((a, b) => b.totalQty - a.totalQty)
+    .slice(0, 12);
+
+  const table = document.getElementById('heatmapTable');
+  if (stats.length === 0) {
+    table.innerHTML = '';
+    return;
+  }
+
+  const allMax = Math.max(...stats.flatMap(s => s.monthly), 1);
+
+  const header = `
+    <thead>
+      <tr>
+        <th>Item</th>
+        ${MONTH_NAMES.map(m => `<th class="month-col">${m}</th>`).join('')}
+        <th style="text-align:right;">Total</th>
+      </tr>
+    </thead>
+  `;
+
+  const rows = stats.map(s => `
+    <tr>
+      <td class="item-name" title="${escapeHtml(s.name)}">${escapeHtml(s.name)}</td>
+      ${s.monthly.map(v => {
+        const intensity = v / allMax;
+        const bg = v === 0 ? 'transparent' : `rgba(227, 100, 20, ${0.15 + intensity * 0.75})`;
+        return `<td class="month-cell" style="background:${bg};">${v || ''}</td>`;
+      }).join('')}
+      <td class="total-cell">${s.totalQty}</td>
+    </tr>
+  `).join('');
+
+  table.innerHTML = header + '<tbody>' + rows + '</tbody>';
+}
+
+function renderTopItems() {
+  const stats = computeItemStats().sort((a, b) => {
+    if (topItemsSort === 'orders') return b.orderCount - a.orderCount;
+    if (topItemsSort === 'cost') return b.totalCost - a.totalCost;
+    return b.totalQty - a.totalQty;
+  }).slice(0, 20);
+
+  const table = document.getElementById('topItemsTable');
+  if (stats.length === 0) {
+    table.innerHTML = '';
+    return;
+  }
+
+  table.innerHTML = `
+    <thead>
+      <tr><th>Item</th><th>Orders</th><th>Total qty</th><th>Total spend</th><th>First ordered</th><th>Last ordered</th></tr>
+    </thead>
+    <tbody>
+      ${stats.map(s => `
+        <tr>
+          <td>${escapeHtml(s.name)}</td>
+          <td>${s.orderCount}</td>
+          <td>${s.totalQty}</td>
+          <td>${s.totalCost ? '$' + s.totalCost.toFixed(2) : '—'}</td>
+          <td>${fmtDate(s.firstDate)}</td>
+          <td>${fmtDate(s.lastDate)}</td>
+        </tr>
+      `).join('')}
+    </tbody>
+  `;
+}
+
+function renderTrends() {
+  document.getElementById('trendsLoading').style.display = 'none';
+  if (orders.length === 0) {
+    document.getElementById('trendsContent').style.display = 'none';
+    document.getElementById('trendsEmpty').style.display = 'block';
+    return;
+  }
+  document.getElementById('trendsContent').style.display = 'block';
+  document.getElementById('trendsEmpty').style.display = 'none';
+
+  renderSummaryCards();
+  renderMonthlyChart();
+  renderCategoryChart();
+  renderHeatmap();
+  renderTopItems();
+}
+
+function renderHistory(filter) {
+  const body = document.getElementById('historyBody');
+  const empty = document.getElementById('historyEmpty');
+  const f = (filter || '').toLowerCase();
+  const rows = orders
+    .filter(o => !f || o.name.toLowerCase().includes(f))
+    .slice()
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  if (rows.length === 0) {
+    body.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  body.innerHTML = rows.map(o => `
+    <tr data-id="${o.id}">
+      <td>${escapeHtml(o.name)}</td>
+      <td>${escapeHtml(o.category || '—')}</td>
+      <td>${o.qty}</td>
+      <td>${fmtDate(o.date)}</td>
+      <td>${o.cost ? '$' + Number(o.cost).toFixed(2) : '—'}</td>
+      <td>${escapeHtml(o.notes || '—')}</td>
+      <td class="del" title="Delete entry">✕</td>
+    </tr>
+  `).join('');
+
+  body.querySelectorAll('td.del').forEach(td => {
+    td.addEventListener('click', async () => {
+      const id = td.parentElement.getAttribute('data-id');
+      td.textContent = '…';
+      await deleteOrder(id);
+      renderAll();
+    });
+  });
+}
+
+function renderHeader() {
+  document.getElementById('entryCountStamp').textContent = `${orders.length} ENTR${orders.length === 1 ? 'Y' : 'IES'}`;
+  if (orders.length === 0) {
+    document.getElementById('lastUpdated').textContent = 'no orders logged yet';
+  } else {
+    const latest = orders.slice().sort((a, b) => b.date.localeCompare(a.date))[0];
+    document.getElementById('lastUpdated').textContent = `last order: ${fmtDate(latest.date)}`;
+  }
+}
+
+function renderAll() {
+  renderHeader();
+  renderTrends();
+  renderHistory(document.getElementById('searchInput').value);
+}
+
+// ---- Tabs ----
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+document.getElementById('monthlyMetric').addEventListener('change', renderMonthlyChart);
+
+document.querySelectorAll('[data-sort]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-sort]').forEach(b => b.classList.remove('active-toggle'));
+    btn.classList.add('active-toggle');
+    topItemsSort = btn.dataset.sort;
+    renderTopItems();
+  });
+});
+
+// ---- Manual add ----
+document.getElementById('f-date').value = todayStr();
+
+document.getElementById('addOrderBtn').addEventListener('click', async () => {
+  const name = document.getElementById('f-name').value.trim();
+  const qty = Number(document.getElementById('f-qty').value) || 1;
+  const category = document.getElementById('f-cat').value;
+  const date = document.getElementById('f-date').value || todayStr();
+  const cost = document.getElementById('f-cost').value;
+  const notes = document.getElementById('f-notes').value.trim();
+  const status = document.getElementById('logStatus');
+  const btn = document.getElementById('addOrderBtn');
+
+  if (!name) {
+    status.textContent = 'Enter an item name first.';
+    status.style.color = 'var(--rust)';
+    return;
+  }
+  if (!isConfigured()) {
+    status.textContent = 'Not connected to your Google Sheet yet — see the banner at the top.';
+    status.style.color = 'var(--rust)';
+    return;
+  }
+
+  btn.disabled = true;
+  status.textContent = 'Saving…';
+  status.style.color = 'var(--ink-dim)';
+
+  try {
+    await addOrders([{ id: uid(), name, qty, category, date, cost: cost ? Number(cost) : null, notes }]);
+    renderAll();
+    status.textContent = `Added "${name}" — ${orders.length} total entries logged.`;
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-qty').value = 1;
+    document.getElementById('f-cost').value = '';
+    document.getElementById('f-notes').value = '';
+    document.getElementById('f-name').focus();
+  } catch (e) {
+    status.textContent = 'Save failed — check your connection and Apps Script URL.';
+    status.style.color = 'var(--rust)';
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+// ---- CSV parsing (Amazon Business order history) ----
+function stripBOM(text) {
+  return text.charCodeAt(0) === 0xFEFF ? text.slice(1) : text;
+}
+
+function parseCSV(text) {
+  text = stripBOM(text);
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i], next = text[i + 1];
+    if (inQuotes) {
+      if (c === '"' && next === '"') { field += '"'; i++; }
+      else if (c === '"') { inQuotes = false; }
+      else { field += c; }
+    } else {
+      if (c === '"') inQuotes = true;
+      else if (c === ',') { row.push(field); field = ''; }
+      else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+      else if (c === '\r') { /* skip */ }
+      else field += c;
+    }
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+  return rows.filter(r => r.some(c => c && c.trim() !== ''));
+}
+
+function findCol(headers, candidates) {
+  const lower = headers.map(h => h.toLowerCase().trim());
+  for (const cand of candidates) {
+    const idx = lower.findIndex(h => h === cand);
+    if (idx !== -1) return idx;
+  }
+  for (const cand of candidates) {
+    const idx = lower.findIndex(h => h.includes(cand));
+    if (idx !== -1) return idx;
+  }
+  return -1;
+}
+
+function parseAmazonDate(raw) {
+  if (!raw) return null;
+  const s = raw.trim();
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+  const d = new Date(s);
+  if (!isNaN(d)) return d.toISOString().slice(0, 10);
+  return null;
+}
+
+function parseMoney(raw) {
+  if (raw === undefined || raw === null || raw === '') return null;
+  const cleaned = String(raw).replace(/[^0-9.\-]/g, '');
+  const n = parseFloat(cleaned);
+  return isNaN(n) ? null : n;
+}
+
+let pendingImport = [];
+
+document.getElementById('csvFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => { document.getElementById('csvInput').value = ev.target.result; };
+  reader.readAsText(file);
+});
+
+document.getElementById('parseCsvBtn').addEventListener('click', () => {
+  const text = document.getElementById('csvInput').value;
+  const status = document.getElementById('importStatus');
+  const skipCancelled = document.getElementById('skipCancelled').checked;
+
+  if (!text.trim()) {
+    status.textContent = 'Paste CSV contents or choose a file first.';
+    status.className = 'import-status import-error';
+    return;
+  }
+  const rows = parseCSV(text);
+  if (rows.length < 2) {
+    status.textContent = 'Could not find any data rows in that CSV.';
+    status.className = 'import-status import-error';
+    return;
+  }
+  const headers = rows[0];
+
+  // Amazon Business itemized order reports use "Title" for the product name;
+  // consumer order history exports sometimes use "Item Name" or "Product Name" instead.
+  const nameIdx   = findCol(headers, ['title', 'item name', 'product name', 'description']);
+  const qtyIdx    = findCol(headers, ['quantity', 'qty']);
+  const dateIdx   = findCol(headers, ['order date', 'date']);
+  const costIdx   = findCol(headers, ['item total', 'item subtotal', 'purchase price per unit', 'total owed', 'total', 'price']);
+  const statusIdx = findCol(headers, ['order status', 'status']);
+  const orderIdIdx= findCol(headers, ['order id', 'order number']);
+  const asinIdx   = findCol(headers, ['asin/isbn', 'asin', 'isbn']);
+
+  if (nameIdx === -1) {
+    status.textContent = 'Could not find an item name / title column in this file — try a different export or add these manually.';
+    status.className = 'import-status import-error';
+    return;
+  }
+
+  let skippedCancelled = 0;
+  let skippedBlank = 0;
+
+  pendingImport = rows.slice(1).map(r => {
+    const name = (r[nameIdx] || '').trim();
+    if (!name) { skippedBlank++; return null; }
+
+    if (skipCancelled && statusIdx !== -1) {
+      const st = (r[statusIdx] || '').toLowerCase();
+      if (st.includes('cancel') || st.includes('return') || st.includes('refund')) {
+        skippedCancelled++;
+        return null;
+      }
+    }
+
+    const noteParts = [];
+    if (orderIdIdx !== -1 && r[orderIdIdx]) noteParts.push('Order ' + r[orderIdIdx].trim());
+    if (asinIdx !== -1 && r[asinIdx]) noteParts.push(r[asinIdx].trim());
+
+    return {
+      id: uid(),
+      name,
+      qty: qtyIdx !== -1 ? (Number(r[qtyIdx]) || 1) : 1,
+      date: dateIdx !== -1 ? (parseAmazonDate(r[dateIdx]) || todayStr()) : todayStr(),
+      cost: costIdx !== -1 ? parseMoney(r[costIdx]) : null,
+      category: 'Other',
+      notes: noteParts.join(' · ')
+    };
+  }).filter(Boolean);
+
+  if (pendingImport.length === 0) {
+    status.textContent = 'No valid rows found after parsing — every row was blank or filtered out.';
+    status.className = 'import-status import-error';
+    return;
+  }
+
+  let msg = `Found ${pendingImport.length} line items ready to import.`;
+  if (skippedCancelled) msg += ` Skipped ${skippedCancelled} cancelled/returned.`;
+  if (skippedBlank) msg += ` Skipped ${skippedBlank} blank rows.`;
+  status.textContent = msg;
+  status.className = 'import-status' + (skippedCancelled || skippedBlank ? ' import-warn' : '');
+
+  document.getElementById('previewCount').textContent = `(${pendingImport.length} items)`;
+  document.getElementById('importPreviewWrap').style.display = 'block';
+  const tbody = document.querySelector('#previewTable tbody');
+  tbody.innerHTML = pendingImport.slice(0, 50).map(o => `
+    <tr>
+      <td>${escapeHtml(o.name)}</td>
+      <td>${o.qty}</td>
+      <td>${fmtDate(o.date)}</td>
+      <td>${o.cost != null ? '$' + o.cost.toFixed(2) : '—'}</td>
+      <td>${escapeHtml(o.notes || '—')}</td>
+    </tr>
+  `).join('') + (pendingImport.length > 50 ? `<tr><td colspan="5" style="color:var(--ink-dim);">…and ${pendingImport.length - 50} more</td></tr>` : '');
+});
+
+document.getElementById('confirmImportBtn').addEventListener('click', async () => {
+  const btn = document.getElementById('confirmImportBtn');
+  const status = document.getElementById('importStatus');
+  if (!isConfigured()) {
+    status.textContent = 'Not connected to your Google Sheet yet — see the banner at the top.';
+    status.className = 'import-status import-error';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+  try {
+    await addOrders(pendingImport);
+    pendingImport = [];
+    document.getElementById('importPreviewWrap').style.display = 'none';
+    document.getElementById('csvInput').value = '';
+    status.textContent = 'Imported successfully.';
+    status.className = 'import-status';
+    renderAll();
+    document.querySelector('.tab-btn[data-tab="trends"]').click();
+  } catch (e) {
+    status.textContent = 'Import failed — check your connection and Apps Script URL.';
+    status.className = 'import-status import-error';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Add these to the log';
+  }
+});
+
+document.getElementById('cancelImportBtn').addEventListener('click', () => {
+  pendingImport = [];
+  document.getElementById('importPreviewWrap').style.display = 'none';
+});
+
+// ---- History filter ----
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  renderHistory(e.target.value);
+});
+
+// ---- Reset ----
+document.getElementById('resetBtn').addEventListener('click', async () => {
+  if (!confirm('Clear all logged orders from the Google Sheet? This cannot be undone.')) return;
+  await clearAll();
+  renderAll();
+});
+
+// ---- Init ----
+(async function init() {
+  if (!isConfigured()) {
+    document.getElementById('configBanner').style.display = 'block';
+    document.getElementById('trendsLoading').style.display = 'none';
+    document.getElementById('trendsEmpty').style.display = 'block';
+    return;
+  }
+  await loadOrders();
+  renderAll();
+})();
+</script>
+</body>
+</html>
