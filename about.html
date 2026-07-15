@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -210,6 +211,8 @@
     color: var(--gold);
   }
 
+  .stat-subtitle { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--gold); margin-bottom: 4px; }
+
   /* ── LOADING ── */
   .loading { text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: rgba(245,240,228,0.3); padding: 40px; }
   .loading-light { color: rgba(2,19,40,0.3); }
@@ -355,6 +358,28 @@
 </section>
 
 
+<!-- 6. SHOP STATS -->
+<section class="section section-alt">
+  <div class="section-inner">
+    <p class="section-label reveal">By The Numbers</p>
+    <h2 class="section-title reveal">Bikes We've Worked On</h2>
+
+    <h3 class="stat-subtitle reveal">By Brand</h3>
+    <div class="chart-container reveal">
+      <div class="chart-wrap"><canvas id="brandChart"></canvas></div>
+      <div class="chart-labels" id="brandLabels"></div>
+    </div>
+
+    <div class="divider reveal"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+
+    <h3 class="stat-subtitle reveal">By Style</h3>
+    <div class="chart-container reveal">
+      <div class="chart-wrap"><canvas id="styleChart"></canvas></div>
+      <div class="chart-labels" id="styleLabels"></div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="footer-brand">BLUFF ROAD <span>BIKE CO LLC</span></div>
   <div class="footer-note">bluffroadbikeco.com &nbsp;·&nbsp; Greenwood, Indiana</div>
@@ -364,8 +389,11 @@
   const SHEET_ID = '2PACX-1vSh-CE0OUDG3R-kbpxMR3Ui9gkSwJmJdXkC63FCEVHPJ_S85kgPEi_C9F77cjliDIy0qqm3i61EZB31';
   const BASE = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?single=true&output=csv`;
   const RACES_GID    = '0';
-  const SHOPLOG_GID  = '1201448514';
   const ATHLETES_GID = '1591224369';
+
+  // Bike shop stats — separate spreadsheet, served via Apps Script as JSON
+  const BIKE_STATS_URL = 'https://script.google.com/macros/s/AKfycbwHFBw6zlbAgArU7AaBuzhnuwjX9PtNVCkQKyp30UXuG0f4DBTz38LEPE64hJn4XHLh/exec';
+  const BRAND_COLORS = ['#E9BD37','#A70D37','#4a7fd4','#7a9e3f','#c0832a','#b25ea8','#3fa796','#d4785a','#8b6fb0','#5c8a99','#2a5298','#e0955e'];
 
   function parseCSV(text) {
     const lines = text.trim().split('\n');
@@ -474,96 +502,90 @@
     }
   }
 
-  // ── SHOP LOG ──
-  async function loadShopLog() {
+  // ── BIKE SHOP STATS (two pie charts: brand + style, percentages only) ──
+  function renderStatChart(canvasId, labelsId, dataObj, colorForLabel) {
+    const labels = Object.keys(dataObj);
+    const counts = Object.values(dataObj);
+    const total  = counts.reduce((a,b) => a+b, 0);
+    const colors = labels.map(colorForLabel);
+
+    const inlineLabels = {
+      id: 'inlineLabels_' + canvasId,
+      afterDraw(chart) {
+        const { ctx: c } = chart;
+        const meta = chart.getDatasetMeta(0);
+        c.save();
+        meta.data.forEach((arc, i) => {
+          const sliceAngle = arc.endAngle - arc.startAngle;
+          if (sliceAngle < 0.22) return; // skip tiny slivers to avoid clutter
+          const angle = (arc.startAngle + arc.endAngle) / 2;
+          const midR  = (arc.outerRadius + arc.innerRadius) / 2;
+          const x     = arc.x + Math.cos(angle) * midR;
+          const y     = arc.y + Math.sin(angle) * midR;
+          const pct   = Math.round((counts[i] / total) * 100) + '%';
+
+          const bw = 44, bh = 22;
+          c.fillStyle = 'rgba(2,19,40,0.72)';
+          c.beginPath();
+          c.roundRect(x - bw/2, y - bh/2, bw, bh, 4);
+          c.fill();
+
+          c.textAlign = 'center';
+          c.textBaseline = 'middle';
+          c.fillStyle = '#E9BD37';
+          c.font = 'bold 13px "Bebas Neue", sans-serif';
+          c.fillText(pct, x, y);
+        });
+        c.restore();
+      }
+    };
+
+    new Chart(document.getElementById(canvasId).getContext('2d'), {
+      type: 'doughnut',
+      data: { labels, datasets: [{ data: counts, backgroundColor: colors, borderColor: '#021328', borderWidth: 3, hoverOffset: 6 }] },
+      options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        layout: { padding: 8 },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => `${ctx.label}: ${Math.round((ctx.raw / total) * 100)}%`
+            }
+          }
+        },
+        cutout: '55%'
+      },
+      plugins: [inlineLabels]
+    });
+
+    const labelsEl = document.getElementById(labelsId);
+    labelsEl.innerHTML = '';
+    labels.forEach((label, i) => {
+      const pct = Math.round((counts[i] / total) * 100) + '%';
+      const item = document.createElement('div');
+      item.className = 'chart-label-item';
+      item.innerHTML = `
+        <div class="chart-label-dot" style="background:${colors[i]}"></div>
+        <div class="chart-label-name">${label}</div>
+        <div class="chart-label-pct">${pct}</div>`;
+      labelsEl.appendChild(item);
+    });
+  }
+
+  async function loadBikeStats() {
     try {
-      const data = await fetchCSV(SHOPLOG_GID);
-      if (!data.length) return;
+      const res  = await fetch(BIKE_STATS_URL);
+      const data = await res.json();
 
-      const brands  = data.map(r => r['Brand'] || r[Object.keys(r)[0]]);
-      const styles  = data.map(r => r['Style']  || r[Object.keys(r)[1]] || 'Other');
-      const counts  = data.map(r => parseInt(r['Count'] || r[Object.keys(r)[2]]) || 0);
-      const total   = counts.reduce((a,b) => a+b, 0);
-      const colors  = styles.map(s => STYLE_COLORS[s] || STYLE_COLORS['Other']);
+      renderStatChart('brandChart', 'brandLabels', data.brand,
+        (label) => BRAND_COLORS[Object.keys(data.brand).indexOf(label) % BRAND_COLORS.length]);
 
-      // Custom inline-label plugin
-      const inlineLabels = {
-        id: 'inlineLabels',
-        afterDraw(chart) {
-          const { ctx: c } = chart;
-          const meta = chart.getDatasetMeta(0);
-          const tot = counts.reduce((a,b)=>a+b,0);
-          c.save();
-          meta.data.forEach((arc, i) => {
-            const sliceAngle = arc.endAngle - arc.startAngle;
-            if (sliceAngle < 0.18) return;
-            const angle  = (arc.startAngle + arc.endAngle) / 2;
-            const midR   = (arc.outerRadius + arc.innerRadius) / 2;
-            const x      = arc.x + Math.cos(angle) * midR;
-            const y      = arc.y + Math.sin(angle) * midR;
-            const pct    = ((counts[i]/tot)*100).toFixed(0) + '%';
-
-            // Dark pill background for readability
-            const bw = 52, bh = 28;
-            c.fillStyle = 'rgba(2,19,40,0.72)';
-            c.beginPath();
-            c.roundRect(x - bw/2, y - bh/2, bw, bh, 4);
-            c.fill();
-
-            c.textAlign = 'center';
-            c.textBaseline = 'middle';
-            c.fillStyle = '#F5F0E4';
-            c.font = '600 10px "Barlow Condensed", sans-serif';
-            c.fillText(brands[i], x, y - 7);
-            c.fillStyle = '#E9BD37';
-            c.font = 'bold 12px "Bebas Neue", sans-serif';
-            c.fillText(pct, x, y + 7);
-          });
-          c.restore();
-        }
-      };
-
-      const ctx = document.getElementById('shopChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: brands,
-          datasets: [{
-            data: counts,
-            backgroundColor: colors,
-            borderColor: '#021328',
-            borderWidth: 3,
-            hoverOffset: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          layout: { padding: 8 },
-          plugins: {
-            legend: { display: false },
-            tooltip: { enabled: false }
-          },
-          cutout: '55%'
-        },
-        plugins: [inlineLabels]
-      });
-
-      // Style color key (one entry per unique style)
-      const labelsEl = document.getElementById('shopLabels');
-      const seen = new Set();
-      styles.forEach((style, i) => {
-        if (seen.has(style)) return;
-        seen.add(style);
-        const item = document.createElement('div');
-        item.className = 'chart-label-item';
-        item.innerHTML = `
-          <div class="chart-label-dot" style="background:${STYLE_COLORS[style] || '#6b6b6b'}"></div>
-          <div class="chart-label-name">${style}</div>`;
-        labelsEl.appendChild(item);
-      });
+      renderStatChart('styleChart', 'styleLabels', data.style,
+        (label) => STYLE_COLORS[label] || STYLE_COLORS['Other']);
     } catch(e) {
-      console.error('Shop log error:', e);
+      console.error('Bike stats error:', e);
     }
   }
 
@@ -589,7 +611,7 @@
 
   loadAthletes();
   loadRaces();
-  loadShopLog();
+  loadBikeStats();
 </script>
 
 </body>
