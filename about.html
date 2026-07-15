@@ -176,7 +176,7 @@
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 80px; height: 80px;
+    width: 96px; height: 96px;
     object-fit: contain;
     pointer-events: none;
   }
@@ -369,7 +369,10 @@
 
     <h3 class="stat-subtitle reveal">By Brand</h3>
     <div class="chart-container reveal">
-      <div class="chart-wrap"><canvas id="brandChart"></canvas></div>
+      <div class="chart-wrap">
+        <canvas id="brandChart"></canvas>
+        <img src="bison-circle.png" alt="" class="chart-logo-overlay">
+      </div>
       <div class="chart-labels" id="brandLabels"></div>
     </div>
 
@@ -377,7 +380,10 @@
 
     <h3 class="stat-subtitle reveal">By Style</h3>
     <div class="chart-container reveal">
-      <div class="chart-wrap"><canvas id="styleChart"></canvas></div>
+      <div class="chart-wrap">
+        <canvas id="styleChart"></canvas>
+        <img src="bison-circle.png" alt="" class="chart-logo-overlay">
+      </div>
       <div class="chart-labels" id="styleLabels"></div>
     </div>
   </div>
