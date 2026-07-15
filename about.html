@@ -161,6 +161,7 @@
   .chart-container {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 48px;
     margin-top: 40px;
     flex-wrap: wrap;
@@ -180,8 +181,9 @@
     pointer-events: none;
   }
   .chart-labels {
-    flex: 1;
+    flex: 0 1 260px;
     min-width: 200px;
+    max-width: 260px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -235,7 +237,8 @@
     footer { flex-direction: column; text-align: center; }
     .logo-flex { flex-direction: column; }
     .logo-img-wrap { flex: 0 0 auto; width: 180px; }
-    .chart-container { flex-direction: column; align-items: flex-start; }
+    .chart-container { flex-direction: column; align-items: center; text-align: center; }
+    .chart-labels { max-width: 280px; }
   }
 </style>
 </head>
@@ -504,8 +507,9 @@
 
   // ── BIKE SHOP STATS (two pie charts: brand + style, percentages only) ──
   function renderStatChart(canvasId, labelsId, dataObj, colorForLabel) {
-    const labels = Object.keys(dataObj);
-    const counts = Object.values(dataObj);
+    const sorted = Object.entries(dataObj).sort((a, b) => b[1] - a[1]);
+    const labels = sorted.map(e => e[0]);
+    const counts = sorted.map(e => e[1]);
     const total  = counts.reduce((a,b) => a+b, 0);
     const colors = labels.map(colorForLabel);
 
