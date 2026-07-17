@@ -21,7 +21,66 @@
 <meta name="twitter:description" content="Fast, affordable road bike repair in Greenwood, IN. Quick turnaround, fair price.">
 <meta name="geo.region" content="US-IN">
 <meta name="geo.placename" content="Greenwood, Indiana">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BicycleRepairShop",
+  "name": "Bluff Road Bike Co",
+  "image": "https://www.bluffroadbikeco.com/logo.png",
+  "url": "https://www.bluffroadbikeco.com/",
+  "telephone": "+13177217339",
+  "email": "bluffroadbikeco@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "6136 Bluff Acres Dr",
+    "addressLocality": "Greenwood",
+    "addressRegion": "IN",
+    "postalCode": "46143",
+    "addressCountry": "US"
+  },
+  "areaServed": [
+    "Greenwood, IN", "Center Grove, IN", "Bargersville, IN",
+    "Whiteland, IN", "Franklin, IN", "Indianapolis, IN"
+  ],
+  "priceRange": "$20-$40",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "5.0",
+    "reviewCount": "4"
+  },
+  "review": [
+    {
+      "@type": "Review",
+      "author": "Eric K.",
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "reviewBody": "Bluff Road Bike Co. helped me get back on the road! I dropped my bike off on a Saturday and had it back in my garage same day. The owner is very knowledgeable and easy to talk to. 10/10 would recommend."
+    },
+    {
+      "@type": "Review",
+      "author": "Russell L.",
+      "reviewRating": { "@type": "Rating", "ratingValue": "5" },
+      "reviewBody": "Fast reliable service, great communication, great pricing. Highly recommend!"
+    }
+  ],
+  "makesOffer": [
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Flat Repair & Tire Swap" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Drivetrain Tune" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Brake Adjustment" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "General Tune-Up" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cleaning" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "General Inspection" } }
+  ]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<!-- Google Analytics (GA4) — replace G-XMMHBSPBHL with your real Measurement ID from analytics.google.com -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XMMHBSPBHL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XMMHBSPBHL');
+</script>
 <style>
   :root {
     --blue: #021328;
@@ -811,6 +870,7 @@
     <div class="hero-divider-line"></div>
   </div>
   <p class="hero-tagline">The basics, done right and done fast.</p>
+  <p class="hero-tagline" style="font-size:14px; opacity:0.5; margin-top:8px;">By appointment — weekdays, evenings, and weekends.</p>
   <br>
   <div class="hero-ctas">
     <a href="#services" class="hero-cta">See What We Fix</a>
@@ -836,12 +896,12 @@
       <div class="how-step reveal">
         <div class="how-number">03</div>
         <h3>Schedule Drop-Off</h3>
-        <p>Bring it by 6136 Bluff Acres Dr at a time that works for you — by appointment.</p>
+        <p>Bring it by 6136 Bluff Acres Dr at a time that works for you, and <a href="https://forms.gle/oWskLFmFKBoDfGuB6" target="_blank" style="color:var(--crimson); text-decoration:underline; text-underline-offset:2px;">sign the quick service waiver</a> before drop-off.</p>
       </div>
       <div class="how-step reveal">
         <div class="how-number">04</div>
         <h3>Ride Away</h3>
-        <p>Most repairs are back in your hands next-day, pending parts availability.</p>
+        <p>Fast turnaround on most repairs — we'll give you a clear timeline when we quote it.</p>
       </div>
     </div>
   </div>
@@ -1089,6 +1149,7 @@
           form.reset();
           document.getElementById('form-success').style.display = 'block';
           btn.textContent = 'Sent!';
+          if (typeof gtag === 'function') gtag('event', 'contact_form_submit', { method: 'formspree' });
         } else {
           btn.textContent = 'Try Again';
           btn.disabled = false;
@@ -1099,6 +1160,20 @@
       }
     });
   }
+
+  // Track key conversion clicks so Analytics shows what's actually driving appointments
+  document.querySelectorAll('a[href^="sms:"]').forEach(el => {
+    el.addEventListener('click', () => { if (typeof gtag === 'function') gtag('event', 'text_click'); });
+  });
+  document.querySelectorAll('a[href^="tel:"]').forEach(el => {
+    el.addEventListener('click', () => { if (typeof gtag === 'function') gtag('event', 'phone_click'); });
+  });
+  document.querySelectorAll('a[href*="forms.gle"]').forEach(el => {
+    el.addEventListener('click', () => { if (typeof gtag === 'function') gtag('event', 'waiver_click'); });
+  });
+  document.querySelectorAll('a[href*="g.page"]').forEach(el => {
+    el.addEventListener('click', () => { if (typeof gtag === 'function') gtag('event', 'review_link_click'); });
+  });
 </script>
 
 </body>
