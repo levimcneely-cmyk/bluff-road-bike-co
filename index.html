@@ -43,6 +43,11 @@
     "Whiteland, IN", "Franklin, IN", "Indianapolis, IN"
   ],
   "priceRange": "$20-$40",
+  "potentialAction": {
+    "@type": "ReserveAction",
+    "target": "https://calendly.com/bluffroadbikeco",
+    "name": "Book An Appointment"
+  },
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "5.0",
@@ -873,9 +878,10 @@
   <p class="hero-tagline" style="font-size:14px; opacity:0.5; margin-top:8px;">By appointment — weekdays, evenings, and weekends.</p>
   <br>
   <div class="hero-ctas">
-    <a href="#services" class="hero-cta">See What We Fix</a>
+    <a href="https://calendly.com/bluffroadbikeco" target="_blank" class="hero-cta">Book An Appointment</a>
     <a href="sms:+13177217339" class="hero-cta-secondary">Text Us</a>
   </div>
+  <a href="#services" style="margin-top:20px; font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:rgba(245,240,228,0.4); text-decoration:underline; text-underline-offset:3px; opacity:0; animation: fadeUp 1s ease 1.2s forwards;">See what we fix ↓</a>
 </section>
 
 <section class="how" id="how">
@@ -896,7 +902,7 @@
       <div class="how-step reveal">
         <div class="how-number">03</div>
         <h3>Schedule Drop-Off</h3>
-        <p>Bring it by 6136 Bluff Acres Dr at a time that works for you, and <a href="https://forms.gle/oWskLFmFKBoDfGuB6" target="_blank" style="color:var(--crimson); text-decoration:underline; text-underline-offset:2px;">sign the quick service waiver</a> before drop-off.</p>
+        <p><a href="https://calendly.com/bluffroadbikeco" target="_blank" style="color:var(--crimson); text-decoration:underline; text-underline-offset:2px;">Book a drop-off time online</a> at 6136 Bluff Acres Dr, and <a href="https://forms.gle/oWskLFmFKBoDfGuB6" target="_blank" style="color:var(--crimson); text-decoration:underline; text-underline-offset:2px;">sign the quick service waiver</a> beforehand.</p>
       </div>
       <div class="how-step reveal">
         <div class="how-number">04</div>
@@ -1058,6 +1064,7 @@
     <h2 class="section-title reveal">Contact</h2>
     <div class="contact-box reveal">
       <div class="contact-name">Levi</div>
+      <a href="https://calendly.com/bluffroadbikeco" target="_blank" style="display:inline-block; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; letter-spacing:3px; text-transform:uppercase; background:var(--gold); color:var(--blue); padding:14px 32px; text-decoration:none; margin-bottom:20px; transition:background 0.2s;">Book An Appointment</a>
       <div class="contact-phone"><a href="sms:+13177217339">(317) 721-7339</a></div>
       <div class="contact-address">
         <a href="https://maps.google.com/?q=6136+Bluff+Acres+Dr,+Greenwood,+IN+46143" target="_blank">6136 Bluff Acres Dr, Greenwood, IN 46143</a>
@@ -1170,6 +1177,9 @@
   });
   document.querySelectorAll('a[href*="forms.gle"]').forEach(el => {
     el.addEventListener('click', () => { if (typeof gtag === 'function') gtag('event', 'waiver_click'); });
+  });
+  document.querySelectorAll('a[href*="calendly.com"]').forEach(el => {
+    el.addEventListener('click', () => { if (typeof gtag === 'function') gtag('event', 'booking_click'); });
   });
   document.querySelectorAll('a[href*="g.page"]').forEach(el => {
     el.addEventListener('click', () => { if (typeof gtag === 'function') gtag('event', 'review_link_click'); });
