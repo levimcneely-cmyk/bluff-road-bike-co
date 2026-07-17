@@ -202,10 +202,33 @@
     padding: 14px 36px;
     text-decoration: none;
     transition: background 0.2s, transform 0.15s;
+  }
+  .hero-cta:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
     opacity: 0;
     animation: fadeUp 1s ease 1s forwards;
   }
-  .hero-cta:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .hero-cta-secondary {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--cream);
+    background: transparent;
+    border: 2px solid var(--gold);
+    padding: 12px 34px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+  }
+  .hero-cta-secondary:hover { background: var(--gold); color: var(--blue); transform: translateY(-2px); }
 
   /* ── SECTIONS ── */
   section { padding: 96px 24px; }
@@ -789,7 +812,10 @@
   </div>
   <p class="hero-tagline">The basics, done right and done fast.</p>
   <br>
-  <a href="#services" class="hero-cta">See What We Fix</a>
+  <div class="hero-ctas">
+    <a href="#services" class="hero-cta">See What We Fix</a>
+    <a href="sms:+13177217339" class="hero-cta-secondary">Text Us</a>
+  </div>
 </section>
 
 <section class="how" id="how">
