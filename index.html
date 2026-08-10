@@ -7,8 +7,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bluff Road Bike Co — Bike Repair in Greenwood, Indiana</title>
-<meta name="description" content="Fast, affordable road bike repair in Greenwood, Indiana. Flat repairs, tune-ups, brake adjustments, drivetrain service and more. Quick turnaround, fair price.">
-<meta name="keywords" content="bike repair Greenwood Indiana, road bike repair Indianapolis, bicycle tune-up Greenwood, flat tire repair, drivetrain tune, brake adjustment, Bluff Road Bike Co">
+<meta name="description" content="Fast, affordable bike and bicycle repair in Greenwood, Indiana and Johnson County. Flat repairs, tune-ups, brake adjustments, drivetrain service and more. Quick turnaround, fair price.">
+<meta name="keywords" content="bike repair Greenwood Indiana, bicycle repair Greenwood Indiana, Johnson County bicycle repair, road bike repair Indianapolis, bicycle tune-up Greenwood, bicycle maintenance, flat tire repair, drivetrain tune, brake adjustment, Bluff Road Bike Co">
 <meta name="author" content="Bluff Road Bike Co LLC">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.bluffroadbikeco.com/">
@@ -373,11 +373,22 @@
     flex-wrap: wrap;
   }
 
-  .owner-badge {
-    width: 110px;
-    height: 110px;
+  .owner-photo-wrap {
+    position: relative;
     flex-shrink: 0;
-    opacity: 0.9;
+    width: 220px;
+  }
+  .owner-photo-wrap img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  .owner-photo-wrap::after {
+    content: '';
+    position: absolute;
+    top: 8px; left: 8px; right: -8px; bottom: -8px;
+    border: 1.5px solid var(--gold);
+    pointer-events: none;
   }
 
   .owner-text { flex: 1; min-width: 260px; }
@@ -914,6 +925,7 @@
     section { padding: 72px 20px; }
     .featured-testimonial-wrap { padding: 72px 20px 0; }
     .owner-flex { flex-direction: column; text-align: center; }
+    .owner-photo-wrap { margin: 0 auto 12px; }
     .contact-box { padding: 36px 24px; }
     footer { flex-direction: column; text-align: center; }
     .faq-item p { padding-right: 0; }
@@ -1013,7 +1025,7 @@
       <div class="why-card reveal">
         <div class="why-number">04</div>
         <h3>Greenwood Grown</h3>
-        <p>Local shop, local riders. Proud to keep Hoosier bikes rolling on Hoosier roads.</p>
+        <p>Local shop, local riders. Proud to keep Hoosier bicycles rolling on Hoosier roads.</p>
       </div>
     </div>
   </div>
@@ -1024,9 +1036,11 @@
     <p class="section-label reveal">Who's Wrenching</p>
     <h2 class="section-title reveal">Meet Your Mechanic</h2>
     <div class="owner-flex reveal">
-      <img class="owner-badge" src="bison-circle.png" alt="Levi, owner and mechanic at Bluff Road Bike Co">
+      <div class="owner-photo-wrap">
+        <img src="levi-shop.jpg" alt="Levi, owner and mechanic at Bluff Road Bike Co, in the shop">
+      </div>
       <div class="owner-text">
-        <p>Hi, I'm Levi — the guy who'll actually be working on your bike. I started riding in college, when I began training for Ironman triathlons and had to learn how to keep my own bike running between races. What started as necessity turned into something I genuinely love: wrenching, dialing in shifting, and getting people back on the road. These days I ride mostly road, with a little gravel mixed in for a change of scenery. I started Bluff Road Bike Co because I wanted Greenwood to have a straightforward option — no week-long wait, no upsells, just honest work at a fair price. I treat every bike that comes through the door the same way I treat my own: with real care and attention to detail. Drop it off, and I'm the one who hands it back to you, tuned and ready to ride.</p>
+        <p>Hi, I'm Levi — the guy who'll actually be working on your bike. I started riding in college, when I began training for Ironman triathlons and had to learn how to keep my own bike running between races. What started as necessity turned into something I genuinely love: wrenching, dialing in shifting, and getting people back on the road. These days I ride mostly road, with a little gravel mixed in for a change of scenery. I started Bluff Road Bike Co because I wanted Greenwood to have a straightforward bicycle repair option — no week-long wait, no upsells, just honest work at a fair price. I treat every bike that comes through the door the same way I treat my own: with real care and attention to detail. Drop it off, and I'm the one who hands it back to you, tuned and ready to ride.</p>
         <div class="owner-sig">— Levi, Owner &amp; Mechanic</div>
       </div>
     </div>
@@ -1047,7 +1061,7 @@
   <div class="section-inner">
     <p class="section-label reveal">What We Do</p>
     <h2 class="section-title reveal">Basic Repairs</h2>
-    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-style:italic;font-size:15px;letter-spacing:1px;color:rgba(2,19,40,0.5);margin-bottom:0;" class="reveal">Services starting at $20 — final price confirmed after a quick inspection, no surprises.</p>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-style:italic;font-size:15px;letter-spacing:1px;color:rgba(2,19,40,0.5);margin-bottom:0;" class="reveal">Bike repair and bicycle maintenance services starting at $20 — final price confirmed after a quick inspection, no surprises.</p>
     <div class="bike-types-row reveal" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:24px 0 8px;">
       <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(2,19,40,0.45);margin-right:4px;">Bikes We Service:</span>
       <span class="area-pill" style="font-size:12px;padding:7px 16px;">Road</span>
@@ -1136,7 +1150,7 @@
       <div class="area-pill reveal">Franklin</div>
       <div class="area-pill reveal">South Indianapolis</div>
     </div>
-    <p class="area-note reveal">Based out of Greenwood, IN, keeping bikes rolling across the south side of Indianapolis and the surrounding Johnson County area. Not seeing your town? Reach out anyway — happy to talk through it.</p>
+    <p class="area-note reveal">Based out of Greenwood, IN, offering bicycle repair across the south side of Indianapolis and throughout Johnson County. Whether you need Greenwood bicycle repair or Johnson County bicycle repair, we've got you covered. Not seeing your town? Reach out anyway — happy to talk through it.</p>
   </div>
 </section>
 
@@ -1147,7 +1161,7 @@
     <div class="faq-list">
       <details class="faq-item reveal">
         <summary>What kinds of bikes do you work on?<span class="faq-icon"></span></summary>
-        <p>Road, TT/triathlon, mountain, hybrid, kids', and cruiser bikes. We currently don't service e-bikes.</p>
+        <p>We handle bicycle repair for road, TT/triathlon, mountain, hybrid, kids', and cruiser bikes. We currently don't service e-bikes.</p>
       </details>
       <details class="faq-item reveal">
         <summary>What if my repair needs a part you don't have on hand?<span class="faq-icon"></span></summary>
@@ -1215,7 +1229,7 @@
 
 <footer>
   <div class="footer-brand">BLUFF ROAD <span>BIKE CO LLC</span></div>
-  <div class="footer-note">bluffroadbikeco.com &nbsp;·&nbsp; Greenwood, Indiana</div>
+  <div class="footer-note">Bike Repair &amp; Bicycle Maintenance &nbsp;·&nbsp; bluffroadbikeco.com &nbsp;·&nbsp; Greenwood, Indiana</div>
 </footer>
 
 <script>
