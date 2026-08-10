@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -361,8 +362,82 @@
     color: rgba(245,240,228,0.6);
   }
 
+  /* ── OWNER / MECHANIC ── */
+  .owner { background: var(--cream); }
+
+  .owner-flex {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+
+  .owner-badge {
+    width: 110px;
+    height: 110px;
+    flex-shrink: 0;
+    opacity: 0.9;
+  }
+
+  .owner-text { flex: 1; min-width: 260px; }
+
+  .owner-text p {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(2,19,40,0.75);
+    margin-bottom: 16px;
+  }
+
+  .owner-sig {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--crimson);
+  }
+
+  /* ── FEATURED TESTIMONIAL (above services) ── */
+  .featured-testimonial-wrap { background: var(--offwhite); padding: 96px 24px 0; }
+  .featured-testimonial {
+    max-width: 760px;
+    margin: 0 auto;
+    background: white;
+    border: 1.5px solid rgba(2,19,40,0.12);
+    border-top: 4px solid var(--gold);
+    padding: 36px 32px;
+    text-align: center;
+  }
+  .featured-testimonial .testimonial-quote {
+    font-size: 17px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(2,19,40,0.8);
+    margin-bottom: 16px;
+  }
+  .featured-testimonial .testimonial-quote::before { content: '“'; color: var(--gold); }
+  .featured-testimonial .testimonial-quote::after { content: '”'; color: var(--gold); }
+  .featured-testimonial .testimonial-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--crimson);
+  }
+  .featured-testimonial .testimonial-stars {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    display: block;
+  }
+
   /* ── SERVICES ── */
-  .services { background: var(--offwhite); }
+  .services { background: var(--offwhite); padding-top: 48px; }
 
   .services-grid {
     display: grid;
@@ -837,6 +912,8 @@
     .nav-links { display: none; }
     .nav-hamburger { display: flex; }
     section { padding: 72px 20px; }
+    .featured-testimonial-wrap { padding: 72px 20px 0; }
+    .owner-flex { flex-direction: column; text-align: center; }
     .contact-box { padding: 36px 24px; }
     footer { flex-direction: column; text-align: center; }
     .faq-item p { padding-right: 0; }
@@ -942,47 +1019,81 @@
   </div>
 </section>
 
+<section class="owner" id="owner">
+  <div class="section-inner">
+    <p class="section-label reveal">Who's Wrenching</p>
+    <h2 class="section-title reveal">Meet Your Mechanic</h2>
+    <div class="owner-flex reveal">
+      <img class="owner-badge" src="bison-circle.png" alt="Levi, owner and mechanic at Bluff Road Bike Co">
+      <div class="owner-text">
+        <p>Hi, I'm Levi — the guy who'll actually be working on your bike. I started riding in college, when I began training for Ironman triathlons and had to learn how to keep my own bike running between races. What started as necessity turned into something I genuinely love: wrenching, dialing in shifting, and getting people back on the road. These days I ride mostly road, with a little gravel mixed in for a change of scenery. I started Bluff Road Bike Co because I wanted Greenwood to have a straightforward option — no week-long wait, no upsells, just honest work at a fair price. I treat every bike that comes through the door the same way I treat my own: with real care and attention to detail. Drop it off, and I'm the one who hands it back to you, tuned and ready to ride.</p>
+        <div class="owner-sig">— Levi, Owner &amp; Mechanic</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="featured-testimonial-wrap">
+  <div class="section-inner">
+    <div class="featured-testimonial reveal">
+      <span class="testimonial-stars">⭐⭐⭐⭐⭐</span>
+      <p class="testimonial-quote">Levi was incredible! With less than 12 hours before a cycling competition, I had damage to my bike. I messaged him late in the evening, he responded quickly and scheduled to fix my bike the next morning. He had my bike fixed quickly. He also went above and beyond by cleaning and oiling as well, making my bike the best for my competition. Very grateful! Highly recommend!</p>
+      <div class="testimonial-name">— Monica H.</div>
+    </div>
+  </div>
+</div>
+
 <section class="services" id="services">
   <div class="section-inner">
     <p class="section-label reveal">What We Do</p>
     <h2 class="section-title reveal">Basic Repairs</h2>
-    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-style:italic;font-size:15px;letter-spacing:1px;color:rgba(2,19,40,0.5);margin-bottom:0;" class="reveal">All prices are estimates. Final cost determined upon inspection of your bike.</p>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:300;font-style:italic;font-size:15px;letter-spacing:1px;color:rgba(2,19,40,0.5);margin-bottom:0;" class="reveal">Services starting at $20 — final price confirmed after a quick inspection, no surprises.</p>
+    <div class="bike-types-row reveal" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:24px 0 8px;">
+      <span style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:rgba(2,19,40,0.45);margin-right:4px;">Bikes We Service:</span>
+      <span class="area-pill" style="font-size:12px;padding:7px 16px;">Road</span>
+      <span class="area-pill" style="font-size:12px;padding:7px 16px;">Gravel</span>
+      <span class="area-pill" style="font-size:12px;padding:7px 16px;">Triathlon / TT</span>
+      <span class="area-pill" style="font-size:12px;padding:7px 16px;">Mountain</span>
+      <span class="area-pill" style="font-size:12px;padding:7px 16px;">Hybrid</span>
+      <span class="area-pill" style="font-size:12px;padding:7px 16px;">Kids'</span>
+      <span class="area-pill" style="font-size:12px;padding:7px 16px;">Cruiser</span>
+    </div>
     <div class="services-grid">
       <div class="service-card reveal">
         <div class="service-icon">🔧</div>
         <h3>Flat Repair & Tire Swap</h3>
         <p>Tube replacements, tire mounts, and valve swaps. Back on the road before you finish your coffee.</p>
-        <div class="service-price">Parts + $20</div>
+        <div class="service-price">Starting at $20 + parts</div>
       </div>
       <div class="service-card reveal">
         <div class="service-icon">⚙️</div>
         <h3>Drivetrain Tune</h3>
         <p>Cable tension, limit screws, indexing. Crisp, precise shifting — the way it should feel.</p>
-        <div class="service-price">Parts + $30</div>
+        <div class="service-price">Starting at $30 + parts</div>
       </div>
       <div class="service-card reveal">
         <div class="service-icon">🛑</div>
         <h3>Brake Adjustment</h3>
         <p>Rim or disc — pad alignment, cable tension, and bleed if needed. Stop with confidence.</p>
-        <div class="service-price">Parts + $30</div>
+        <div class="service-price">Starting at $30 + parts</div>
       </div>
       <div class="service-card reveal">
         <div class="service-icon">🛠️</div>
         <h3>General Tune-Up</h3>
         <p>Full once-over before a big ride or after a hard season. Everything adjusted, checked, and dialed.</p>
-        <div class="service-price">$40</div>
+        <div class="service-price">Starting at $40</div>
       </div>
       <div class="service-card reveal">
         <div class="service-icon">🧽</div>
         <h3>Cleaning</h3>
         <p>Drivetrain degreased, frame wiped down, chain lubed. Ride clean, run smooth.</p>
-        <div class="service-price">$20</div>
+        <div class="service-price">Starting at $20</div>
       </div>
       <div class="service-card reveal">
         <div class="service-icon">🔍</div>
         <h3>General Inspection</h3>
         <p>Heading into a big ride? We'll go top-to-bottom and make sure nothing surprises you out there.</p>
-        <div class="service-price">$30</div>
+        <div class="service-price">Starting at $30</div>
       </div>
     </div>
   </div>
@@ -997,10 +1108,6 @@
       <a href="https://g.page/r/CeCDeERRsHcWEBM/review" target="_blank">See all reviews on Google</a>
     </div>
     <div class="testimonials-grid">
-      <div class="testimonial-card reveal">
-        <p class="testimonial-quote">Levi was incredible! With less than 12 hours before a cycling competition, I had damage to my bike. I messaged him late in the evening, he responded quickly and scheduled to fix my bike the next morning. He had my bike fixed quickly. He also went above and beyond by cleaning and oiling as well, making my bike the best for my competition. Very grateful! Highly recommend!</p>
-        <div class="testimonial-name">— Monica H.</div>
-      </div>
       <div class="testimonial-card reveal">
         <p class="testimonial-quote">Bluff Road Bike Co. helped me get back on the road! I dropped my bike off on a Saturday and had it back in my garage same day. The owner is very knowledgeable and easy to talk to. 10/10 would recommend.</p>
         <div class="testimonial-name">— Eric K.</div>
