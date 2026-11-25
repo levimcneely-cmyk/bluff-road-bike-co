@@ -93,7 +93,7 @@ function doPost(e) {
       set('sigName', d.typedName);
       set('phone', d.phone);
       set('email', d.email);
-      set('date', d.serviceDate);
+      set('date', toDate_(d.serviceDate));
       set('makeModel', [d.brand, d.model].filter(Boolean).join(' '));
       set('notes', d.notes || '');
       set('completed', false);
@@ -109,9 +109,7 @@ function doPost(e) {
       set('client', (d.signedAtClient || '') + ' / ' + (d.timezone || ''));
       set('ua', (d.userAgent || '').slice(0, 300));
       set('source', 'bluffroadbikeco.com/waiver');
-      sh.appendRow(row);
-      // keep the Completed column a checkbox
-      sh.getRange(sh.getLastRow(), col[H.completed]).insertCheckboxes();
+      sh.appendRow(row);   // Completed is a typed BOOLEAN table column, so it renders as a checkbox on its own
     } finally {
       lock.releaseLock();
     }
@@ -248,6 +246,11 @@ function sendMail_(to, subject, body, attachments) {
 function sha256_(s) {
   return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, s, Utilities.Charset.UTF_8)
     .map(b => ((b + 256) % 256).toString(16).padStart(2, '0')).join('');
+}
+
+function toDate_(ymd) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(ymd);
+  return m ? new Date(+m[1], +m[2] - 1, +m[3]) : ymd;   // real date, matches the Form's rows
 }
 
 function norm_(s) { return String(s).trim().replace(/\s+/g, ' ').toLowerCase(); }
