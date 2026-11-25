@@ -107,6 +107,7 @@
     .paper { border: none; box-shadow: none; padding: 0; }
   }
 </style>
+<script src="config.js"></script>
 </head>
 <body>
 
@@ -291,8 +292,8 @@
 
 <script>
 (() => {
-  // ── CONFIG ── Paste the Apps Script web-app URL (ends in /exec) here after deploying waiver-backend.gs
-  const ENDPOINT = 'PASTE_APPS_SCRIPT_URL_HERE';
+  // ── CONFIG ── The Apps Script web-app URL lives in /config.js (shared with /admin and the about page)
+  const ENDPOINT = (window.BRBC && window.BRBC.api) || 'PASTE_APPS_SCRIPT_URL_HERE';
   const WAIVER_VERSION = '2026.11';
   const EFFECTIVE = 'November 25, 2026';
 

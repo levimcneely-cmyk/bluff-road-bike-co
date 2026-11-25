@@ -10,6 +10,9 @@
  *   2. saves a signed PDF (full agreement text + signature + audit trail) to a
  *      Drive folder "BRBC Signed Waivers",
  *   3. emails the PDF to the customer and a heads-up to the shop.
+ *
+ * admin-backend.gs (same project) adds the password-locked /admin and the public
+ * stats feed (GET) for the about page. Paste both files; see apps-script/README.md.
  */
 
 const SHOP_NAME   = 'Bluff Road Bike Co LLC';
@@ -43,13 +46,20 @@ const H = {
   source: 'Source'
 };
 
+// GET = public bike stats for the about page (brand + style counts only). See admin-backend.gs.
 function doGet() {
+  if (typeof publicStats_ === 'function') {
+    try { return json_(publicStats_()); } catch (err) { return json_({ ok: false, error: 'stats unavailable' }); }
+  }
   return json_({ ok: true, service: 'BRBC waiver' });
 }
 
 function doPost(e) {
+  let d;
+  try { d = JSON.parse(e.postData.contents); } catch (err) { return json_({ ok: false, error: 'Bad request.' }); }
+  // /admin calls carry an "action"; waiver signatures don't.
+  if (d && d.action && typeof adminRoute_ === 'function') return json_(adminRoute_(d));
   try {
-    const d = JSON.parse(e.postData.contents);
     if (d.company) return json_({ ok: true, ref: 'BRBC-OK' });   // honeypot: quietly drop bots
 
     // ── validate ──
@@ -87,8 +97,8 @@ function doPost(e) {
       set('makeModel', [d.brand, d.model].filter(Boolean).join(' '));
       set('notes', d.notes || '');
       set('completed', false);
-      set('brand', d.brand);
-      set('style', d.style);
+      set('brand', typeof normBrand_ === 'function' ? normBrand_(d.brand) : d.brand);
+      set('style', typeof normStyle_ === 'function' ? normStyle_(d.style) : d.style);
       set('ref', ref);
       set('version', d.waiverVersion || '');
       set('initials', d.initials);
@@ -105,6 +115,7 @@ function doPost(e) {
     } finally {
       lock.releaseLock();
     }
+    if (typeof admBustStats_ === 'function') admBustStats_();   // about-page charts pick up the new bike
 
     // ── Emails ──
     sendMail_(d.email,

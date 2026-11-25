@@ -243,6 +243,7 @@
     .chart-labels { max-width: 280px; }
   }
 </style>
+<script src="config.js"></script>
 </head>
 <body>
 
@@ -403,8 +404,12 @@
   const RACES_GID    = '0';
   const ATHLETES_GID = '1591224369';
 
-  // Bike shop stats — separate spreadsheet, served via Apps Script as JSON
-  const BIKE_STATS_URL = 'https://script.google.com/macros/s/AKfycbwHFBw6zlbAgArU7AaBuzhnuwjX9PtNVCkQKyp30UXuG0f4DBTz38LEPE64hJn4XHLh/exec';
+  // Bike shop stats — counts only (no customer info), served as JSON.
+  // Prefers the shop backend from config.js (same data /admin edits); falls back to the original stats script.
+  const BIKE_STATS_URLS = [
+    window.BRBC && window.BRBC.api,
+    'https://script.google.com/macros/s/AKfycbwHFBw6zlbAgArU7AaBuzhnuwjX9PtNVCkQKyp30UXuG0f4DBTz38LEPE64hJn4XHLh/exec'
+  ].filter(Boolean);
   const BRAND_COLORS = ['#E9BD37','#A70D37','#4a7fd4','#7a9e3f','#c0832a','#b25ea8','#3fa796','#d4785a','#8b6fb0','#5c8a99','#2a5298','#e0955e'];
 
   function parseCSV(text) {
@@ -445,6 +450,8 @@
     'MTB':           '#2a5298',
     'Hybrid':        '#4a7fd4',
     'Beach Cruiser': '#c0832a',
+    'TT / Triathlon':'#b25ea8',
+    'Kids':          '#7a9e3f',
     'Other':         '#6b6b6b',
   };
 
@@ -589,8 +596,14 @@
 
   async function loadBikeStats() {
     try {
-      const res  = await fetch(BIKE_STATS_URL);
-      const data = await res.json();
+      let data = null;
+      for (const url of BIKE_STATS_URLS) {
+        try {
+          const d = await (await fetch(url)).json();
+          if (d && d.brand && d.style && Object.keys(d.brand).length) { data = d; break; }
+        } catch (err) { /* try the next one */ }
+      }
+      if (!data) throw new Error('no stats source answered');
 
       renderStatChart('brandChart', 'brandLabels', data.brand,
         (label) => BRAND_COLORS[Object.keys(data.brand).indexOf(label) % BRAND_COLORS.length]);

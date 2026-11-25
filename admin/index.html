@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Shop Admin | Bluff Road Bike Co</title>
+<meta name="theme-color" content="#021328">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="BRBC Admin">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="../config.js"></script>
+<style>
+  :root{
+    --navy:#021328; --navy-2:#0b2340; --gold:#E9BD37; --gold-ink:#8a6410; --crimson:#A70D37;
+    --cream:#F5F0E4; --paper:#faf7f0; --card:#fff; --ink:#14202f; --muted:#5f6b78; --line:#e4ddcc;
+    --good:#2f7d4f; --good-bg:#e5f2ea; --warn-bg:#fbf1dc; --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;font-family:Barlow,system-ui,sans-serif;color:var(--ink);background:var(--paper);font-size:16px;line-height:1.45;padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+  button,input,select,textarea{font:inherit;color:inherit}
+  a{color:var(--navy)}
+  .hidden{display:none !important}
+  .muted{color:var(--muted)} .small{font-size:.86rem}
+  h1,h2,h3{margin:0;font-weight:400}
+  .bebas{font-family:"Bebas Neue",sans-serif;letter-spacing:.04em}
+  h2{font-family:"Bebas Neue",sans-serif;letter-spacing:.05em;font-size:1.45rem;color:var(--navy);line-height:1}
+  .label{font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.74rem;color:var(--muted)}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--navy);color:var(--cream);border:0;font-weight:600;padding:11px 18px;border-radius:999px;cursor:pointer;text-decoration:none;white-space:nowrap;min-height:44px}
+  .btn:hover{background:var(--navy-2)}
+  .btn:disabled{opacity:.55;cursor:default}
+  .btn.gold{background:var(--gold);color:var(--navy)}
+  .btn.ghost{background:transparent;color:var(--navy);border:1.5px solid var(--line)}
+  .btn.ghost:hover{background:var(--cream)}
+  .btn.danger{background:transparent;color:var(--crimson);border:1.5px solid #e9c3cc}
+  .btn.danger.armed{background:var(--crimson);color:#fff;border-color:var(--crimson)}
+  .iconbtn{background:transparent;border:0;color:var(--cream);font-size:1.5rem;width:44px;height:44px;border-radius:50%;cursor:pointer;line-height:1}
+  .iconbtn:hover{background:rgba(255,255,255,.08)}
+
+  /* ── login ── */
+  #login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--navy)}
+  .login-card{background:var(--paper);border-radius:18px;padding:28px 24px;width:100%;max-width:380px;text-align:center;border-top:4px solid var(--crimson)}
+  .login-card img{width:92px;height:auto;margin:0 auto 8px;display:block}
+  .login-card h1{font-family:"Bebas Neue",sans-serif;letter-spacing:.08em;font-size:1.9rem;color:var(--navy)}
+  .login-card h1 span{color:var(--crimson)}
+  .login-card input[type=password]{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:10px;background:#fff;margin:16px 0 10px;font-size:1.05rem}
+  .login-card .check{display:flex;gap:8px;align-items:center;justify-content:center;margin-bottom:14px;font-size:.92rem;color:var(--muted)}
+  .login-card .btn{width:100%}
+  .err{color:var(--crimson);font-size:.92rem;min-height:1.3em;margin-top:10px}
+
+  /* ── app chrome ── */
+  header.top{position:sticky;top:0;z-index:20;background:var(--navy);border-bottom:2px solid var(--crimson);padding:calc(8px + env(safe-area-inset-top)) 12px 0}
+  .top-row{display:flex;align-items:center;gap:10px;max-width:1100px;margin:0 auto}
+  .top-row img{width:34px;height:34px}
+  .brand-name{font-family:"Bebas Neue",sans-serif;letter-spacing:.1em;color:var(--cream);font-size:1.25rem;line-height:1}
+  .brand-name span{color:var(--gold)}
+  .brand-sub{font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:.2em;font-size:.68rem;color:rgba(245,240,228,.6);text-transform:uppercase}
+  .top-row .grow{flex:1}
+  nav.tabs{display:flex;gap:4px;max-width:1100px;margin:8px auto 0}
+  nav.tabs button{flex:1;background:transparent;border:0;color:rgba(245,240,228,.7);font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:.85rem;padding:10px 4px 11px;border-bottom:3px solid transparent;cursor:pointer}
+  nav.tabs button.on{color:var(--gold);border-bottom-color:var(--gold)}
+  main{max-width:1100px;margin:0 auto;padding:16px 14px}
+  .menu{position:absolute;right:12px;top:calc(56px + env(safe-area-inset-top));background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(2,19,40,.25);padding:6px;min-width:220px;z-index:40}
+  .menu button,.menu a{display:block;width:100%;text-align:left;background:none;border:0;padding:11px 12px;border-radius:8px;cursor:pointer;color:var(--ink);text-decoration:none;font-size:.95rem}
+  .menu button:hover,.menu a:hover{background:var(--cream)}
+
+  .fab{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:30;background:var(--gold);color:var(--navy);border:0;border-radius:999px;padding:15px 22px;font-weight:700;font-size:1.02rem;box-shadow:0 8px 22px rgba(2,19,40,.3);cursor:pointer;display:flex;align-items:center;gap:8px}
+  .fab b{font-size:1.4rem;line-height:1;margin-top:-2px}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+  .card + .card{margin-top:14px}
+  .grid2 > .card + .card{margin-top:0}
+  .card-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+  .grid2{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
+  @media (min-width:820px){ .grid2{grid-template-columns:1fr 1fr} }
+
+  /* filters */
+  .seg{display:inline-flex;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:3px;gap:2px;flex-wrap:wrap}
+  .seg button{border:0;background:transparent;padding:7px 12px;border-radius:999px;cursor:pointer;font-weight:600;font-size:.88rem;color:var(--muted);min-height:36px}
+  .seg button.on{background:var(--navy);color:var(--cream)}
+  .filters{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+
+  /* KPI tiles */
+  .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  @media (min-width:700px){ .kpis{grid-template-columns:repeat(4,1fr)} }
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+  .kpi .v{font-family:"Bebas Neue",sans-serif;font-size:2.3rem;line-height:1;color:var(--navy);margin-top:4px;letter-spacing:.02em}
+  .kpi .s{font-size:.82rem;color:var(--muted);margin-top:3px}
+  .kpi.hero{background:var(--navy);border-color:var(--navy)}
+  .kpi.hero .label{color:rgba(245,240,228,.65)} .kpi.hero .v{color:var(--gold)} .kpi.hero .s{color:rgba(245,240,228,.7)}
+  .up{color:var(--good);font-weight:600} .down{color:var(--crimson);font-weight:600}
+
+  .chartbox{position:relative;height:240px}
+  .chartbox.short{height:190px}
+  .donut-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .donut{position:relative;width:190px;height:190px;flex:0 0 auto;margin:0 auto}
+  .donut .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none}
+  .donut .mid b{font-family:"Bebas Neue",sans-serif;font-size:2.1rem;color:var(--navy);line-height:1}
+  .donut .mid span{font-size:.72rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font-family:"Barlow Condensed",sans-serif;font-weight:700}
+  .legend{flex:1;min-width:190px;list-style:none;margin:0;padding:0}
+  .legend li{display:flex;align-items:center;gap:9px;padding:5px 0;border-bottom:1px solid #f1ece0;font-size:.93rem}
+  .legend li:last-child{border-bottom:0}
+  .legend .dot{width:12px;height:12px;border-radius:3px;flex:0 0 auto}
+  .legend .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .legend .ct{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+  .legend .pc{font-variant-numeric:tabular-nums;color:var(--muted);width:3.2em;text-align:right}
+
+  table.mini{width:100%;border-collapse:collapse;font-size:.93rem}
+  table.mini th{text-align:left;font-family:"Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;font-size:.72rem;color:var(--muted);font-weight:700;padding:6px 4px;border-bottom:1.5px solid var(--line)}
+  table.mini td{padding:8px 4px;border-bottom:1px solid #f1ece0;font-variant-numeric:tabular-nums}
+  table.mini td.n,table.mini th.n{text-align:right}
+  .bar-in{height:8px;border-radius:4px;background:var(--navy);opacity:.85}
+
+  /* shop queue */
+  .queue{list-style:none;margin:0;padding:0}
+  .queue li{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #f1ece0}
+  .queue li:last-child{border-bottom:0}
+  .queue .q-main{flex:1;min-width:0;cursor:pointer}
+  .queue .q-main b{display:block}
+  .days{font-size:.8rem;padding:2px 8px;border-radius:999px;background:var(--warn-bg);color:var(--gold-ink);font-weight:600;white-space:nowrap}
+
+  /* bikes list */
+  .search{flex:1;min-width:180px;padding:11px 14px;border:1.5px solid var(--line);border-radius:999px;background:#fff}
+  select.pill{padding:9px 12px;border:1.5px solid var(--line);border-radius:999px;background:#fff;min-height:40px}
+  .month-h{display:flex;justify-content:space-between;align-items:baseline;margin:18px 2px 6px}
+  .month-h:first-child{margin-top:4px}
+  .bike{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer}
+  .bike:hover{border-color:#cfc4a8}
+  .bike .dt{width:44px;text-align:center;flex:0 0 auto;line-height:1}
+  .bike .dt b{display:block;font-family:"Bebas Neue",sans-serif;font-size:1.6rem;color:var(--navy)}
+  .bike .dt span{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-family:"Barlow Condensed",sans-serif;font-weight:700}
+  .bike .info{flex:1;min-width:0}
+  .bike .info b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bike .info > span{display:block;font-size:.87rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .swatch{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:1px}
+  .status{border:0;border-radius:999px;padding:7px 11px;font-weight:600;font-size:.82rem;cursor:pointer;white-space:nowrap;min-height:36px}
+  .status.done{background:var(--good-bg);color:var(--good)}
+  .status.open{background:var(--warn-bg);color:var(--gold-ink)}
+  .empty{text-align:center;color:var(--muted);padding:30px 10px}
+
+  /* months */
+  .mrow{display:grid;grid-template-columns:1fr auto;gap:8px 12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px}
+  .mrow .mn{font-family:"Bebas Neue",sans-serif;font-size:1.35rem;color:var(--navy);letter-spacing:.04em;line-height:1.1}
+  .mrow .ms{font-size:.86rem;color:var(--muted)}
+  .mrow .pl{display:flex;align-items:center;gap:6px}
+  .mrow .pl input{width:118px;padding:9px 10px;border:1.5px solid var(--line);border-radius:10px;text-align:right;font-variant-numeric:tabular-nums}
+  .mrow .notes{grid-column:1 / -1}
+  .mrow .notes input{width:100%;padding:8px 10px;border:1px dashed var(--line);border-radius:8px;font-size:.9rem;background:transparent}
+  .saved-tick{color:var(--good);font-size:.85rem;width:1.2em}
+
+  /* bottom sheet */
+  .scrim{position:fixed;inset:0;background:rgba(2,19,40,.55);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+  @media (min-width:700px){ .scrim{align-items:center} }
+  .sheet{background:var(--paper);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom))}
+  @media (min-width:700px){ .sheet{border-radius:20px} }
+  .sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .sheet-head h2{font-size:1.7rem}
+  .x{background:#ece5d3;border:0;width:38px;height:38px;border-radius:50%;font-size:1.2rem;cursor:pointer;color:var(--navy)}
+  .field{margin-bottom:14px}
+  .field > label,.field > .label{display:block;margin-bottom:6px}
+  .field input[type=text],.field input[type=date],.field input[type=number],.field input[type=tel],.field input[type=email],.field input[type=password],.field textarea{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:10px;background:#fff;font-size:1rem}
+  .field textarea{min-height:70px;resize:vertical}
+  .field input:focus,.field textarea:focus,.search:focus{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 13px;cursor:pointer;font-weight:600;font-size:.92rem;min-height:40px;display:inline-flex;align-items:center;gap:6px}
+  .chip.on{background:var(--navy);border-color:var(--navy);color:var(--cream)}
+  .chip .swatch{margin:0}
+  .brand-input{margin-top:8px}
+  .toggle{display:flex;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:4px;gap:4px}
+  .toggle button{flex:1;border:0;background:transparent;border-radius:9px;padding:11px;font-weight:700;cursor:pointer;color:var(--muted)}
+  .toggle button.on.open{background:var(--warn-bg);color:var(--gold-ink)}
+  .toggle button.on.done{background:var(--good-bg);color:var(--good)}
+  .signed{background:var(--good-bg);color:var(--good);border-radius:10px;padding:9px 12px;font-size:.9rem;margin-bottom:14px}
+  .signed a{color:var(--good);font-weight:600}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .actions .btn{flex:1}
+  .formerr{color:var(--crimson);min-height:1.2em;font-size:.92rem;margin:2px 0 8px}
+
+  .toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--navy);color:var(--cream);padding:11px 18px;border-radius:999px;z-index:60;font-weight:600;box-shadow:0 8px 22px rgba(2,19,40,.3);max-width:90vw;text-align:center}
+  .loading{padding:50px 10px;text-align:center;color:var(--muted)}
+  .spin{width:28px;height:28px;border:3px solid var(--line);border-top-color:var(--crimson);border-radius:50%;animation:sp 0.8s linear infinite;margin:0 auto 10px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  footer.hc{text-align:center;padding:24px 10px 8px;font-size:.8rem;color:var(--muted)}
+  footer.hc a{color:var(--muted);text-decoration:none}
+</style>
+</head>
+<body>
+
+<!-- ───────── LOGIN ───────── -->
+<section id="login" class="hidden">
+  <form class="login-card" id="loginForm" autocomplete="on">
+    <img src="../logo.png" alt="Bluff Road Bike Co">
+    <h1>Shop <span>Admin</span></h1>
+    <div class="muted small">Bluff Road Bike Co · private</div>
+    <input type="text" name="username" value="brbc-admin" autocomplete="username" class="hidden" aria-hidden="true" tabindex="-1">
+    <input type="password" id="pw" placeholder="Password" autocomplete="current-password" required aria-label="Password">
+    <label class="check"><input type="checkbox" id="remember" checked> Keep me signed in on this device</label>
+    <button class="btn" id="loginBtn" type="submit">Unlock</button>
+    <div class="err" id="loginErr" role="alert"></div>
+  </form>
+</section>
+
+<!-- ───────── APP ───────── -->
+<section id="app" class="hidden">
+  <header class="top">
+    <div class="top-row">
+      <img src="../bison-circle.png" alt="">
+      <div class="grow">
+        <div class="brand-name">Bluff Road <span>Bike Co</span></div>
+        <div class="brand-sub">Shop admin</div>
+      </div>
+      <button class="iconbtn" id="refreshBtn" title="Refresh" aria-label="Refresh">⟳</button>
+      <button class="iconbtn" id="menuBtn" title="More" aria-label="More">⋯</button>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button data-tab="dash" class="on" role="tab">Dashboard</button>
+      <button data-tab="bikes" role="tab">Bikes</button>
+      <button data-tab="months" role="tab">Months</button>
+    </nav>
+    <div class="menu hidden" id="menu">
+      <a id="sheetLink" href="#" target="_blank" rel="noopener">Open the Google Sheet ↗</a>
+      <a href="../about.html#" target="_blank" rel="noopener">See public stats (About page) ↗</a>
+      <button id="pwBtn">Change password</button>
+      <button id="logoutBtn">Sign out</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="loadingView" class="loading"><div class="spin"></div>Loading the shop…</div>
+
+    <!-- DASHBOARD -->
+    <div id="view-dash" class="hidden">
+      <div class="filters">
+        <div class="seg" id="rangeSeg">
+          <button data-r="all" class="on">All time</button>
+          <button data-r="year" id="yearBtn">This year</button>
+          <button data-r="12m">12 mo</button>
+          <button data-r="90d">90 days</button>
+        </div>
+      </div>
+
+      <div class="kpis" id="kpis"></div>
+
+      <div class="card" id="queueCard" style="margin-top:14px">
+        <div class="card-head"><h2>In the shop now</h2><span class="muted small" id="queueCount"></span></div>
+        <ul class="queue" id="queue"></ul>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="card-head"><h2>Bikes per month</h2><span class="muted small" id="perMonthNote"></span></div>
+        <div class="chartbox"><canvas id="monthChart" role="img" aria-label="Bikes per month"></canvas></div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="card-head"><h2>By brand</h2><span class="muted small" id="brandNote"></span></div>
+          <div class="donut-row">
+            <div class="donut"><canvas id="brandChart" role="img" aria-label="Bikes by brand"></canvas><div class="mid"><b id="brandMid">0</b><span>bikes</span></div></div>
+            <ul class="legend" id="brandLegend"></ul>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>By style</h2><span class="muted small" id="styleNote"></span></div>
+          <div class="donut-row">
+            <div class="donut"><canvas id="styleChart" role="img" aria-label="Bikes by style"></canvas><div class="mid"><b id="styleMid">0</b><span>bikes</span></div></div>
+            <ul class="legend" id="styleLegend"></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px" id="plCard">
+        <div class="card-head"><h2>Profit / loss by month</h2><span class="muted small">From the Months tab</span></div>
+        <div class="chartbox short"><canvas id="plChart" role="img" aria-label="Profit or loss by month"></canvas></div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="card-head"><h2>Busiest drop-off days</h2></div>
+          <div class="chartbox short"><canvas id="dowChart" role="img" aria-label="Bikes by day of week"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h2>Most common bikes</h2><span class="muted small">brand + style</span></div>
+          <table class="mini"><thead><tr><th>Bike</th><th class="n">Count</th><th style="width:24%"></th></tr></thead><tbody id="combos"></tbody></table>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="card-head"><h2>Customers</h2></div>
+        <table class="mini"><thead><tr><th>Customer</th><th class="n">Bikes</th><th class="n">Visits</th><th class="n">Last seen</th></tr></thead><tbody id="regulars"></tbody></table>
+        <div class="muted small" style="margin-top:8px">Top repeat customers. A visit is a different drop-off day.</div>
+      </div>
+    </div>
+
+    <!-- BIKES -->
+    <div id="view-bikes" class="hidden">
+      <div class="filters">
+        <input class="search" id="q" type="search" placeholder="Search name, brand, model, notes…" aria-label="Search bikes">
+        <div class="seg" id="statusSeg">
+          <button data-s="all" class="on">All</button>
+          <button data-s="open">In shop</button>
+          <button data-s="done">Done</button>
+        </div>
+        <select class="pill" id="monthSel" aria-label="Month"></select>
+      </div>
+      <div id="bikeList"></div>
+    </div>
+
+    <!-- MONTHS -->
+    <div id="view-months" class="hidden">
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-head" style="margin-bottom:4px"><h2 id="ytdTitle">Year to date</h2></div>
+        <div class="kpis" id="ytdKpis"></div>
+        <div class="muted small" style="margin-top:10px">Type each month's profit / loss. It saves when you leave the box. Bike counts fill in on their own.</div>
+      </div>
+      <div id="monthList"></div>
+    </div>
+
+    <footer class="hc"><a href="https://herdcoindy.com/" target="_blank" rel="noopener">© 2026 The Herd Co. · Greenwood / Indianapolis, Indiana</a></footer>
+  </main>
+
+  <button class="fab" id="addBtn"><b>＋</b> Add bike</button>
+</section>
+
+<!-- ───────── BIKE SHEET ───────── -->
+<div class="scrim hidden" id="bikeScrim">
+  <form class="sheet" id="bikeForm" autocomplete="off">
+    <div class="sheet-head"><h2 id="sheetTitle">Add a bike</h2><button type="button" class="x" id="closeSheet" aria-label="Close">✕</button></div>
+
+    <div class="signed hidden" id="signedNote"></div>
+
+    <div class="row2">
+      <div class="field"><label class="label" for="f-date">Date in</label><input type="date" id="f-date" required></div>
+      <div class="field"><label class="label" for="f-charged">Charged ($)</label><input type="number" id="f-charged" inputmode="decimal" step="0.01" min="0" placeholder="optional"></div>
+    </div>
+
+    <div class="field"><label class="label" for="f-customer">Customer</label>
+      <input type="text" id="f-customer" list="customerList" placeholder="Name (optional)" autocapitalize="words">
+      <datalist id="customerList"></datalist>
+    </div>
+
+    <div class="field"><span class="label">Brand</span>
+      <div class="chips" id="brandChips"></div>
+      <input type="text" id="f-brand" class="brand-input" list="brandList" placeholder="…or type a brand" autocapitalize="words" style="width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:10px;background:#fff">
+      <datalist id="brandList"></datalist>
+    </div>
+
+    <div class="field"><span class="label">Style</span>
+      <div class="chips" id="styleChips"></div>
+    </div>
+
+    <div class="field"><label class="label" for="f-model">Model / description</label><input type="text" id="f-model" placeholder="e.g. Madone, kids 20&quot;, pink cruiser"></div>
+    <div class="field"><label class="label" for="f-notes">Work / notes</label><textarea id="f-notes" placeholder="Tune-up, new tubes, hanger…"></textarea></div>
+
+    <div class="field"><span class="label">Status</span>
+      <div class="toggle" id="statusToggle">
+        <button type="button" data-v="open" class="open">In the shop</button>
+        <button type="button" data-v="done" class="done">Done</button>
+      </div>
+    </div>
+
+    <div class="formerr" id="formErr" role="alert"></div>
+    <div class="actions">
+      <button class="btn" type="submit" id="saveBtn">Save bike</button>
+      <button class="btn ghost" type="button" id="saveAnother">Save + another for this customer</button>
+    </div>
+    <div class="actions" id="editActions" style="margin-top:10px">
+      <button class="btn ghost" type="button" id="dupBtn">Add another bike for this customer</button>
+      <button class="btn danger" type="button" id="delBtn">Delete</button>
+    </div>
+  </form>
+</div>
+
+<!-- ───────── PASSWORD SHEET ───────── -->
+<div class="scrim hidden" id="pwScrim">
+  <form class="sheet" id="pwForm">
+    <div class="sheet-head"><h2>Change password</h2><button type="button" class="x" data-close="pwScrim" aria-label="Close">✕</button></div>
+    <input type="text" name="username" value="brbc-admin" autocomplete="username" class="hidden" aria-hidden="true" tabindex="-1">
+    <div class="field"><label class="label" for="pwOld">Current password</label><input type="password" id="pwOld" autocomplete="current-password" required></div>
+    <div class="field"><label class="label" for="pwNew">New password (10+ characters)</label><input type="password" id="pwNew" autocomplete="new-password" minlength="10" required></div>
+    <div class="formerr" id="pwErr"></div>
+    <button class="btn" type="submit" style="width:100%">Change password</button>
+    <div class="muted small" style="margin-top:10px">Signs out every other device.</div>
+  </form>
+</div>
+
+<div class="toast hidden" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+var API = (window.BRBC && window.BRBC.api) || '';
+var TOKEN_KEY = 'brbcAdminToken';
+
+/* Validated categorical order (light surface): gold, crimson, blue, teal, orange, purple, green, magenta + gray for "everything else" */
+var PALETTE = ['#C9971A','#A70D37','#2a5298','#12957a','#d0621f','#8b5fbf','#5f8f1f','#c2417f'];
+var GRAY = '#8a8f98';
+var STYLE_COLORS = { 'Road':'#C9971A','Gravel':'#A70D37','MTB':'#2a5298','Hybrid':'#12957a','TT / Triathlon':'#d0621f','Beach Cruiser':'#8b5fbf','Kids':'#5f8f1f','Other':GRAY };
+var DEFAULT_STYLES = ['Road','Gravel','MTB','Hybrid','TT / Triathlon','Beach Cruiser','Kids','Other'];
+var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+var S = { bikes:[], monthly:[], styles:DEFAULT_STYLES, today:'', sheetUrl:'#', tab:'dash', range:'all', status:'all', month:'all', q:'' };
+var charts = {};
+var $ = function(id){ return document.getElementById(id); };
+var esc = function(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); };
+
+/* ───────── auth + api ───────── */
+function getToken(){ try{ return localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY) || ''; }catch(e){ return ''; } }
+function setToken(t, remember){ try{ localStorage.removeItem(TOKEN_KEY); sessionStorage.removeItem(TOKEN_KEY); (remember?localStorage:sessionStorage).setItem(TOKEN_KEY,t); }catch(e){} }
+function clearToken(){ try{ localStorage.removeItem(TOKEN_KEY); sessionStorage.removeItem(TOKEN_KEY); }catch(e){} }
+function remembered(){ try{ return !!localStorage.getItem(TOKEN_KEY); }catch(e){ return false; } }
+
+function api(action, data){
+  var body = Object.assign({ action:action, token:getToken() }, data || {});
+  return fetch(API, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(body) })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (res && res.auth === false){ clearToken(); showLogin('Signed out — please log in again.'); throw new Error('auth'); }
+      if (!res || !res.ok) throw new Error((res && res.error) || 'Something went wrong.');
+      return res;
+    });
+}
+
+function showLogin(msg){
+  $('app').classList.add('hidden'); $('login').classList.remove('hidden');
+  $('loginErr').textContent = msg || '';
+  setTimeout(function(){ $('pw').focus(); }, 50);
+}
+
+$('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  if (!API){ $('loginErr').textContent = 'Backend URL not set yet — paste it into config.js (see apps-script/README.md).'; return; }
+  var btn = $('loginBtn'); btn.disabled = true; btn.textContent = 'Checking…'; $('loginErr').textContent = '';
+  fetch(API, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify({ action:'login', password:$('pw').value, remember:$('remember').checked }) })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (!res.ok) throw new Error(res.error || 'Wrong password.');
+      setToken(res.token, $('remember').checked); $('pw').value = '';
+      start();
+    })
+    .catch(function(err){ $('loginErr').textContent = err.message === 'Failed to fetch' ? 'Could not reach the backend. Check config.js / the deployment.' : err.message; })
+    .then(function(){ btn.disabled = false; btn.textContent = 'Unlock'; });
+});
+
+function start(){
+  $('login').classList.add('hidden'); $('app').classList.remove('hidden');
+  load(true);
+}
+
+function load(first){
+  if (first){ $('loadingView').classList.remove('hidden'); ['dash','bikes','months'].forEach(function(t){ $('view-'+t).classList.add('hidden'); }); }
+  return api('bootstrap').then(function(res){
+    S.bikes = res.bikes || []; S.monthly = res.monthly || []; S.styles = (res.styles && res.styles.length) ? res.styles : DEFAULT_STYLES;
+    S.today = res.today || ymd(new Date()); S.sheetUrl = res.sheetUrl || '#';
+    $('sheetLink').href = S.sheetUrl;
+    $('loadingView').classList.add('hidden');
+    renderAll();
+  }).catch(function(err){
+    if (err.message !== 'auth') $('loadingView').innerHTML = '<div class="err">' + esc(err.message) + '</div><button class="btn ghost" onclick="location.reload()">Try again</button>';
+  });
+}
+
+/* ───────── helpers ───────── */
+function ymd(d){ return d.getFullYear() + '-' + ('0'+(d.getMonth()+1)).slice(-2) + '-' + ('0'+d.getDate()).slice(-2); }
+function parseYmd(s){ var p = String(s||'').split('-'); return new Date(+p[0], +p[1]-1, +p[2] || 1); }
+function mKey(s){ return String(s||'').slice(0,7); }
+function mLabel(k, long){ var p = k.split('-'); return (long?MONTHS_LONG:MONTHS)[+p[1]-1] + (long ? ' ' + p[0] : " '" + p[0].slice(2)); }
+function money(n){ var v = Number(n)||0; return (v<0?'−$':'$') + Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:0, maximumFractionDigits:2}); }
+function custKey(n){ return String(n||'').trim().toLowerCase().replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' '); }
+function daysBetween(a,b){ return Math.round((parseYmd(b) - parseYmd(a))/864e5); }
+function toast(msg){ var t = $('toast'); t.textContent = msg; t.classList.remove('hidden'); clearTimeout(t._h); t._h = setTimeout(function(){ t.classList.add('hidden'); }, 2400); }
+
+function monthRange(fromKey, toKey){
+  var out = [], p = fromKey.split('-'), y = +p[0], m = +p[1];
+  var q = toKey.split('-'), ty = +q[0], tm = +q[1];
+  while (y < ty || (y === ty && m <= tm)){ out.push(y + '-' + ('0'+m).slice(-2)); m++; if (m>12){ m=1; y++; } }
+  return out;
+}
+
+function inRange(b){
+  if (S.range === 'all') return true;
+  var t = parseYmd(S.today);
+  if (S.range === 'year') return b.date.slice(0,4) === S.today.slice(0,4);
+  var from = new Date(t);
+  if (S.range === '12m'){ from.setMonth(from.getMonth()-11); from.setDate(1); }
+  if (S.range === '90d') from.setDate(from.getDate()-89);
+  return b.date >= ymd(from);
+}
+
+/* Brand colors follow the brand (ranked by all-time count), never its rank inside a filter. */
+function brandColorMap(){
+  var c = {}; S.bikes.forEach(function(b){ if (b.brand) c[b.brand] = (c[b.brand]||0)+1; });
+  var ranked = Object.keys(c).sort(function(a,b){ return c[b]-c[a] || a.localeCompare(b); });
+  var map = {}; ranked.forEach(function(name, i){ map[name] = i < 7 ? PALETTE[i] : GRAY; });
+  return { map:map, top:ranked.slice(0,7) };
+}
+function styleColor(s){ return STYLE_COLORS[s] || '#c2417f'; }
+
+function countBy(list, fn){ var c = {}; list.forEach(function(x){ var k = fn(x); if (k) c[k] = (c[k]||0)+1; }); return c; }
+
+/* ───────── render ───────── */
+function renderAll(){
+  fillPickers();
+  showTab(S.tab); // show first so charts measure a visible canvas
+  if (S.tab === 'dash') renderDash();
+  if (S.tab === 'bikes') renderBikes();
+  if (S.tab === 'months') renderMonths();
+}
+
+function showTab(t){
+  S.tab = t;
+  document.querySelectorAll('nav.tabs button').forEach(function(b){ b.classList.toggle('on', b.dataset.tab === t); });
+  ['dash','bikes','months'].forEach(function(x){ $('view-'+x).classList.toggle('hidden', x !== t); });
+}
+
+document.querySelectorAll('nav.tabs button').forEach(function(b){
+  b.addEventListener('click', function(){
+    showTab(b.dataset.tab);
+    if (S.tab === 'dash') renderDash();
+    if (S.tab === 'bikes') renderBikes();
+    if (S.tab === 'months') renderMonths();
+    window.scrollTo(0,0);
+  });
+});
+
+/* ── Dashboard ── */
+function kpi(label, v, s, hero){ return '<div class="kpi' + (hero?' hero':'') + '"><div class="label">' + label + '</div><div class="v">' + v + '</div>' + (s?'<div class="s">'+s+'</div>':'') + '</div>'; }
+
+function renderDash(){
+  var all = S.bikes.filter(function(b){ return b.date; });
+  var list = all.filter(inRange);
+  var thisM = mKey(S.today);
+  var lastD = parseYmd(S.today); lastD.setDate(1); lastD.setMonth(lastD.getMonth()-1);
+  var lastM = mKey(ymd(lastD));
+  var nThis = all.filter(function(b){ return mKey(b.date) === thisM; }).length;
+  var nLast = all.filter(function(b){ return mKey(b.date) === lastM; }).length;
+  var open = S.bikes.filter(function(b){ return !b.completed; });
+
+  // months spanned by the range (for averages)
+  var keys = list.map(function(b){ return mKey(b.date); }).sort();
+  var span = keys.length ? monthRange(keys[0], thisM > keys[keys.length-1] ? thisM : keys[keys.length-1]) : [];
+  var perM = countBy(list, function(b){ return mKey(b.date); });
+  var best = Object.keys(perM).sort(function(a,b){ return perM[b]-perM[a]; })[0];
+
+  // customers
+  var cust = {};
+  list.forEach(function(b){ var k = custKey(b.customer); if (!k) return; (cust[k] = cust[k] || { days:{}, n:0 }); cust[k].n++; cust[k].days[b.date] = 1; });
+  var custN = Object.keys(cust).length;
+  var repeat = Object.keys(cust).filter(function(k){ return Object.keys(cust[k].days).length > 1; }).length;
+
+  // money
+  var charged = list.filter(function(b){ return b.charged !== '' && b.charged != null; });
+  var revenue = charged.reduce(function(a,b){ return a + Number(b.charged||0); }, 0);
+  var plIn = S.monthly.filter(function(m){ return m.pl !== '' && m.pl != null && inRange({ date: m.month + '-15' }); });
+  var plSum = plIn.reduce(function(a,m){ return a + Number(m.pl||0); }, 0);
+
+  var delta = nThis - nLast;
+  var deltaTxt = nLast || nThis ? '<span class="' + (delta>=0?'up':'down') + '">' + (delta>=0?'▲ ':'▼ ') + Math.abs(delta) + '</span> vs ' + MONTHS[lastD.getMonth()] : '';
+  var html = '';
+  html += kpi(S.range === 'all' ? 'Bikes, all time' : 'Bikes in range', list.length, custN ? custN + ' customers' : '', true);
+  html += kpi('This month', nThis, deltaTxt);
+  html += kpi('In the shop', open.length, open.length ? 'not marked done' : 'all caught up');
+  html += kpi('Avg / month', span.length ? (list.length / span.length).toFixed(1) : '0', best ? 'Best: ' + mLabel(best) + ' (' + perM[best] + ')' : '');
+  html += kpi('Repeat customers', repeat, custN ? Math.round(repeat/custN*100) + '% came back' : '');
+  html += kpi('Profit / loss', plIn.length ? money(plSum) : '—', plIn.length ? plIn.length + ' month' + (plIn.length>1?'s':'') + ' entered' : 'Enter on Months tab');
+  if (charged.length){
+    html += kpi('Charged (logged)', money(revenue), charged.length + ' bikes with $');
+    html += kpi('Avg ticket', money(revenue / charged.length), 'per bike with $');
+  } else {
+    var multi = {}; list.forEach(function(b){ var k = custKey(b.customer) + '|' + b.date; multi[k] = (multi[k]||0)+1; });
+    var multiN = Object.keys(multi).filter(function(k){ return multi[k] > 1 && k.split('|')[0]; }).length;
+    html += kpi('Multi-bike drop-offs', multiN, 'same customer, same day');
+    var styleC = countBy(list, function(b){ return b.style; }); var topS = Object.keys(styleC).sort(function(a,b){ return styleC[b]-styleC[a]; })[0];
+    html += kpi('Top style', topS ? esc(topS) : '—', topS ? Math.round(styleC[topS]/list.length*100) + '% of bikes' : '');
+  }
+  $('kpis').innerHTML = html;
+
+  // queue
+  var q = open.slice().sort(function(a,b){ return a.date < b.date ? -1 : 1; });
+  $('queueCard').classList.toggle('hidden', !q.length);
+  $('queueCount').textContent = q.length + ' bike' + (q.length===1?'':'s');
+  $('queue').innerHTML = q.map(function(b){
+    var d = daysBetween(b.date, S.today);
+    return '<li><div class="q-main" data-ref="' + esc(b.ref) + '"><b>' + esc(b.brand || 'No brand') + ' · ' + esc(b.style || '—') + '</b><span class="muted small">' + esc(b.customer || 'No name') + (b.model ? ' · ' + esc(b.model) : '') + '</span></div>' +
+      '<span class="days">' + (d <= 0 ? 'today' : d + 'd') + '</span>' +
+      '<button class="status open" data-toggle="' + esc(b.ref) + '">Mark done</button></li>';
+  }).join('');
+
+  drawMonthChart(all, thisM);
+  drawDonut('brand', list);
+  drawDonut('style', list);
+  drawPL();
+  drawDow(list);
+  renderCombos(list);
+  renderRegulars(list);
+}
+
+function baseOpts(){
+  return {
+    responsive:true, maintainAspectRatio:false, animation:false,
+    plugins:{ legend:{ display:false }, tooltip:{ backgroundColor:'#021328', titleFont:{ family:'Barlow', weight:'600' }, bodyFont:{ family:'Barlow' }, padding:10, cornerRadius:8, displayColors:false } },
+    scales:{
+      x:{ grid:{ display:false }, border:{ color:'#d9d1bd' }, ticks:{ color:'#5f6b78', font:{ family:'Barlow', size:12 } } },
+      y:{ beginAtZero:true, grid:{ color:'#efe9dc' }, border:{ display:false }, ticks:{ color:'#5f6b78', font:{ family:'Barlow', size:12 }, precision:0 } }
+    }
+  };
+}
+function chart(id, cfg){ if (charts[id]) charts[id].destroy(); charts[id] = new Chart($(id), cfg); }
+
+function drawMonthChart(all, thisM){
+  var keys = all.map(function(b){ return mKey(b.date); }).sort();
+  if (!keys.length){ chart('monthChart', { type:'bar', data:{ labels:[], datasets:[] }, options:baseOpts() }); return; }
+  var months = monthRange(keys[0], thisM > keys[keys.length-1] ? thisM : keys[keys.length-1]);
+  if (months.length > 18) months = months.slice(-18);
+  var c = countBy(all, function(b){ return mKey(b.date); });
+  var data = months.map(function(k){ return c[k] || 0; });
+  $('perMonthNote').textContent = months.length > 1 ? mLabel(months[0]) + ' – ' + mLabel(months[months.length-1]) : '';
+  var o = baseOpts();
+  o.plugins.tooltip.callbacks = { title:function(it){ return mLabel(months[it[0].dataIndex], true); }, label:function(it){ return it.raw + ' bike' + (it.raw===1?'':'s') + (months[it.dataIndex] === thisM ? ' (so far)' : ''); } };
+  chart('monthChart', { type:'bar',
+    data:{ labels:months.map(function(k){ return mLabel(k); }),
+      datasets:[{ data:data, backgroundColor:months.map(function(k){ return k === thisM ? '#C9971A' : '#021328'; }), borderRadius:{ topLeft:4, topRight:4 }, borderSkipped:'bottom', maxBarThickness:42, categoryPercentage:.8, barPercentage:.9 }] },
+    options:o,
+    plugins:[valueLabels()] });
+}
+
+/* small value labels on top of bars (bars are few, so every label is readable) */
+function valueLabels(fmt){
+  return { id:'vl', afterDatasetsDraw:function(ch){
+    var ctx = ch.ctx, meta = ch.getDatasetMeta(0);
+    ctx.save(); ctx.font = '600 12px Barlow, sans-serif'; ctx.fillStyle = '#14202f'; ctx.textAlign = 'center';
+    meta.data.forEach(function(bar, i){
+      var v = ch.data.datasets[0].data[i]; if (!v) return;
+      var neg = v < 0; ctx.textBaseline = neg ? 'top' : 'bottom';
+      ctx.fillText(fmt ? fmt(v) : v, bar.x, neg ? bar.y + 4 : bar.y - 4);
+    });
+    ctx.restore();
+  } };
+}
+
+function drawDonut(kind, list){
+  var counts = countBy(list, function(b){ return b[kind]; });
+  var total = Object.keys(counts).reduce(function(a,k){ return a + counts[k]; }, 0);
+  var labels, colors, values;
+  if (kind === 'brand'){
+    var cm = brandColorMap();
+    var top = Object.keys(counts).filter(function(k){ return cm.map[k] !== GRAY; }).sort(function(a,b){ return counts[b]-counts[a] || a.localeCompare(b); });
+    var rest = Object.keys(counts).filter(function(k){ return cm.map[k] === GRAY; });
+    labels = top.slice(); values = top.map(function(k){ return counts[k]; }); colors = top.map(function(k){ return cm.map[k]; });
+    if (rest.length){ labels.push('All other brands (' + rest.length + ')'); values.push(rest.reduce(function(a,k){ return a + counts[k]; }, 0)); colors.push(GRAY); }
+    $('brandNote').textContent = Object.keys(counts).length + ' brands';
+  } else {
+    labels = Object.keys(counts).sort(function(a,b){ return counts[b]-counts[a]; });
+    values = labels.map(function(k){ return counts[k]; }); colors = labels.map(styleColor);
+    $('styleNote').textContent = labels.length + ' styles';
+  }
+  $(kind + 'Mid').textContent = total;
+  chart(kind + 'Chart', { type:'doughnut',
+    data:{ labels:labels, datasets:[{ data:values, backgroundColor:colors, borderColor:'#fff', borderWidth:2, hoverOffset:5 }] },
+    options:{ responsive:true, maintainAspectRatio:false, cutout:'62%', animation:false,
+      plugins:{ legend:{ display:false }, tooltip:{ backgroundColor:'#021328', padding:10, cornerRadius:8, callbacks:{ label:function(it){ return ' ' + it.label + ': ' + it.raw + ' (' + Math.round(it.raw/total*100) + '%)'; } } } } } });
+  $(kind + 'Legend').innerHTML = labels.map(function(l, i){
+    return '<li><span class="dot" style="background:' + colors[i] + '"></span><span class="nm">' + esc(l) + '</span><span class="ct">' + values[i] + '</span><span class="pc">' + Math.round(values[i]/total*100) + '%</span></li>';
+  }).join('') || '<li class="muted">No bikes in this range.</li>';
+}
+
+function drawPL(){
+  var ms = S.monthly.filter(function(m){ return m.pl !== '' && m.pl != null && inRange({ date:m.month + '-15' }); }).sort(function(a,b){ return a.month < b.month ? -1 : 1; });
+  $('plCard').classList.toggle('hidden', !ms.length);
+  if (!ms.length) return;
+  var o = baseOpts();
+  o.scales.y.ticks.callback = function(v){ return money(v); };
+  o.scales.y.ticks.precision = undefined;
+  o.scales.y.grid.color = function(c){ return c.tick && c.tick.value === 0 ? '#9aa3ad' : '#efe9dc'; };
+  o.plugins.tooltip.callbacks = { title:function(it){ return mLabel(ms[it[0].dataIndex].month, true); }, label:function(it){ return (it.raw < 0 ? 'Loss ' : 'Profit ') + money(it.raw); } };
+  chart('plChart', { type:'bar',
+    data:{ labels:ms.map(function(m){ return mLabel(m.month); }),
+      datasets:[{ data:ms.map(function(m){ return Number(m.pl); }), backgroundColor:ms.map(function(m){ return Number(m.pl) < 0 ? '#A70D37' : '#2f7d4f'; }), borderRadius:4, borderSkipped:false, maxBarThickness:42 }] },
+    options:o, plugins:[valueLabels(function(v){ return money(Math.round(v)); })] });
+}
+
+function drawDow(list){
+  var names = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], c = [0,0,0,0,0,0,0];
+  list.forEach(function(b){ c[parseYmd(b.date).getDay()]++; });
+  var order = [1,2,3,4,5,6,0];
+  var o = baseOpts();
+  o.plugins.tooltip.callbacks = { label:function(it){ return it.raw + ' bike' + (it.raw===1?'':'s'); } };
+  chart('dowChart', { type:'bar',
+    data:{ labels:order.map(function(i){ return names[i]; }), datasets:[{ data:order.map(function(i){ return c[i]; }), backgroundColor:'#2a5298', borderRadius:{ topLeft:4, topRight:4 }, borderSkipped:'bottom', maxBarThickness:34 }] },
+    options:o, plugins:[valueLabels()] });
+}
+
+function renderCombos(list){
+  var c = countBy(list, function(b){ return b.brand && b.style ? b.brand + '|' + b.style : ''; });
+  var top = Object.keys(c).sort(function(a,b){ return c[b]-c[a] || a.localeCompare(b); }).slice(0,6);
+  var max = top.length ? c[top[0]] : 1;
+  $('combos').innerHTML = top.map(function(k){
+    var p = k.split('|');
+    return '<tr><td><span class="swatch" style="background:' + styleColor(p[1]) + '"></span>' + esc(p[0]) + ' <span class="muted">' + esc(p[1]) + '</span></td><td class="n">' + c[k] + '</td><td><div class="bar-in" style="width:' + Math.max(6, c[k]/max*100) + '%"></div></td></tr>';
+  }).join('') || '<tr><td colspan="3" class="muted">No bikes yet.</td></tr>';
+}
+
+function renderRegulars(list){
+  var cust = {};
+  list.forEach(function(b){
+    var k = custKey(b.customer); if (!k) return;
+    var x = cust[k] = cust[k] || { name:b.customer.trim(), n:0, days:{}, last:'' };
+    x.n++; x.days[b.date] = 1; if (b.date > x.last) x.last = b.date;
+  });
+  var rows = Object.keys(cust).map(function(k){ var x = cust[k]; x.visits = Object.keys(x.days).length; return x; })
+    .filter(function(x){ return x.visits > 1 || x.n > 1; })
+    .sort(function(a,b){ return b.visits - a.visits || b.n - a.n || (a.last < b.last ? 1 : -1); }).slice(0,8);
+  $('regulars').innerHTML = rows.map(function(x){
+    var d = parseYmd(x.last);
+    return '<tr><td>' + esc(x.name) + '</td><td class="n">' + x.n + '</td><td class="n">' + x.visits + '</td><td class="n">' + MONTHS[d.getMonth()] + ' ' + d.getDate() + '</td></tr>';
+  }).join('') || '<tr><td colspan="4" class="muted">No repeat customers in this range yet.</td></tr>';
+}
+
+/* ── Bikes list ── */
+function fillPickers(){
+  var keys = {}; S.bikes.forEach(function(b){ if (b.date) keys[mKey(b.date)] = (keys[mKey(b.date)]||0)+1; });
+  var opts = '<option value="all">All months</option>' + Object.keys(keys).sort().reverse().map(function(k){ return '<option value="' + k + '">' + mLabel(k, true) + ' (' + keys[k] + ')</option>'; }).join('');
+  $('monthSel').innerHTML = opts; $('monthSel').value = keys[S.month] ? S.month : 'all';
+  if (!keys[S.month]) S.month = 'all';
+}
+
+function renderBikes(){
+  var q = S.q.trim().toLowerCase();
+  var list = S.bikes.filter(function(b){
+    if (S.status === 'open' && b.completed) return false;
+    if (S.status === 'done' && !b.completed) return false;
+    if (S.month !== 'all' && mKey(b.date) !== S.month) return false;
+    if (q && [b.customer,b.brand,b.style,b.model,b.notes,b.email,b.phone].join(' ').toLowerCase().indexOf(q) < 0) return false;
+    return true;
+  }).sort(function(a,b){ return a.date === b.date ? (a.logged < b.logged ? 1 : -1) : (a.date < b.date ? 1 : -1); });
+
+  if (!list.length){ $('bikeList').innerHTML = '<div class="empty">' + (S.bikes.length ? 'No bikes match.' : 'No bikes yet. Tap <b>＋ Add bike</b>.') + '</div>'; return; }
+  var html = '', cur = '';
+  var group = countBy(list, function(b){ return mKey(b.date); });
+  list.forEach(function(b){
+    var k = mKey(b.date);
+    if (k !== cur){ cur = k; html += '<div class="month-h"><h2>' + (k ? mLabel(k, true) : 'No date') + '</h2><span class="muted small">' + group[k] + ' bike' + (group[k]===1?'':'s') + '</span></div>'; }
+    var d = b.date ? parseYmd(b.date) : null;
+    var sub = [b.style || 'No style', b.customer || 'No name', b.model].filter(Boolean).join(' · ');
+    html += '<div class="bike" data-ref="' + esc(b.ref) + '">' +
+      '<div class="dt"><b>' + (d ? d.getDate() : '—') + '</b><span>' + (d ? MONTHS[d.getMonth()] : '') + '</span></div>' +
+      '<div class="info"><b><span class="swatch" style="background:' + styleColor(b.style) + '"></span>' + esc(b.brand || 'No brand') + (b.charged !== '' && b.charged != null ? ' <span class="muted" style="font-weight:500">· ' + money(b.charged) + '</span>' : '') + '</b><span>' + esc(sub) + '</span></div>' +
+      '<button class="status ' + (b.completed ? 'done' : 'open') + '" data-toggle="' + esc(b.ref) + '">' + (b.completed ? '✓ Done' : 'In shop') + '</button>' +
+    '</div>';
+  });
+  $('bikeList').innerHTML = html;
+}
+
+$('q').addEventListener('input', function(){ S.q = this.value; renderBikes(); });
+$('monthSel').addEventListener('change', function(){ S.month = this.value; renderBikes(); });
+$('statusSeg').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if (!b) return;
+  S.status = b.dataset.s; this.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); }); renderBikes();
+});
+$('rangeSeg').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if (!b) return;
+  S.range = b.dataset.r; this.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); }); renderDash();
+});
+
+/* tap a bike → edit; tap the status pill → toggle done */
+document.addEventListener('click', function(e){
+  var t = e.target.closest('[data-toggle]');
+  if (t){ e.stopPropagation(); toggleDone(t.dataset.toggle, t); return; }
+  var r = e.target.closest('.bike[data-ref], .q-main[data-ref]');
+  if (r) openSheet(findBike(r.dataset.ref));
+});
+
+function findBike(ref){ return S.bikes.filter(function(b){ return b.ref === ref; })[0]; }
+function upsertLocal(b){
+  var i = S.bikes.findIndex(function(x){ return x.ref === b.ref; });
+  if (i >= 0) S.bikes[i] = b; else S.bikes.push(b);
+}
+function rerender(){ fillPickers(); if (S.tab === 'dash') renderDash(); if (S.tab === 'bikes') renderBikes(); if (S.tab === 'months') renderMonths(); }
+
+function toggleDone(ref, btn){
+  var b = findBike(ref); if (!b) return;
+  var next = Object.assign({}, b, { completed: !b.completed });
+  btn.disabled = true;
+  upsertLocal(next); rerender();
+  api('saveBike', { bike: next }).then(function(res){ upsertLocal(res.bike); rerender(); toast(res.bike.completed ? '✓ Marked done' : 'Back in the shop'); })
+    .catch(function(err){ upsertLocal(b); rerender(); if (err.message !== 'auth') toast(err.message); });
+}
+
+/* ── Months ── */
+function renderMonths(){
+  var bikesBy = countBy(S.bikes, function(b){ return mKey(b.date); });
+  var chargedBy = {}; S.bikes.forEach(function(b){ if (b.charged !== '' && b.charged != null){ var k = mKey(b.date); chargedBy[k] = (chargedBy[k]||0) + Number(b.charged); } });
+  var pl = {}; S.monthly.forEach(function(m){ pl[m.month] = m; });
+  var keys = Object.keys(bikesBy).concat(Object.keys(pl)).concat([mKey(S.today)]).filter(Boolean).sort();
+  var months = keys.length ? monthRange(keys[0], keys[keys.length-1]).reverse() : [];
+
+  var yr = S.today.slice(0,4);
+  var ytdBikes = 0, ytdPL = 0, ytdPLn = 0, ytdCh = 0;
+  months.forEach(function(k){ if (k.slice(0,4) !== yr) return; ytdBikes += bikesBy[k]||0; ytdCh += chargedBy[k]||0; if (pl[k] && pl[k].pl !== '' && pl[k].pl != null){ ytdPL += Number(pl[k].pl); ytdPLn++; } });
+  $('ytdTitle').textContent = yr + ' so far';
+  $('ytdKpis').innerHTML = kpi('Bikes', ytdBikes, '', true) + kpi('Profit / loss', ytdPLn ? money(ytdPL) : '—', ytdPLn + ' of ' + months.filter(function(k){ return k.slice(0,4) === yr; }).length + ' months entered') +
+    kpi('Charged (logged)', ytdCh ? money(ytdCh) : '—', 'from bikes with $') + kpi('Per bike', ytdPLn && ytdBikes ? money(ytdPL / ytdBikes) : '—', 'profit ÷ bikes');
+
+  $('monthList').innerHTML = months.map(function(k){
+    var m = pl[k] || {}; var n = bikesBy[k] || 0;
+    var done = S.bikes.filter(function(b){ return mKey(b.date) === k && b.completed; }).length;
+    var val = m.pl === '' || m.pl == null ? '' : m.pl;
+    return '<div class="mrow" data-month="' + k + '">' +
+      '<div><div class="mn">' + mLabel(k, true) + '</div><div class="ms">' + n + ' bike' + (n===1?'':'s') + (n && done !== n ? ' · ' + (n-done) + ' in shop' : '') + (chargedBy[k] ? ' · ' + money(chargedBy[k]) + ' charged' : '') + '</div></div>' +
+      '<div class="pl"><span class="saved-tick"></span><input type="number" step="0.01" inputmode="decimal" placeholder="P/L $" aria-label="Profit or loss for ' + mLabel(k, true) + '" value="' + esc(val) + '" data-f="pl"></div>' +
+      '<div class="notes"><input type="text" placeholder="Note (optional)" value="' + esc(m.notes || '') + '" data-f="notes" aria-label="Note for ' + mLabel(k, true) + '"></div>' +
+    '</div>';
+  }).join('');
+}
+
+$('monthList').addEventListener('change', function(e){
+  var inp = e.target.closest('input[data-f]'); if (!inp) return;
+  var row = inp.closest('.mrow'), k = row.dataset.month;
+  var payload = { month:k, pl: row.querySelector('[data-f=pl]').value, notes: row.querySelector('[data-f=notes]').value };
+  var tick = row.querySelector('.saved-tick'); tick.textContent = '…';
+  api('saveMonth', { month: payload }).then(function(res){
+    var i = S.monthly.findIndex(function(m){ return m.month === k; });
+    if (i >= 0) S.monthly[i] = res.month; else S.monthly.push(res.month);
+    tick.textContent = '✓'; setTimeout(function(){ tick.textContent = ''; }, 1800);
+    var y = $('ytdKpis'); if (y) renderMonthsKeepFocus();
+  }).catch(function(err){ tick.textContent = '!'; if (err.message !== 'auth') toast(err.message); });
+});
+function renderMonthsKeepFocus(){
+  var a = document.activeElement, sel = a && a.closest && a.closest('.mrow') ? [a.closest('.mrow').dataset.month, a.dataset.f] : null;
+  renderMonths();
+  if (sel){ var el = document.querySelector('.mrow[data-month="' + sel[0] + '"] [data-f="' + sel[1] + '"]'); if (el) el.focus(); }
+}
+
+/* ───────── bike sheet ───────── */
+var editing = null, status = 'done', armTimer = null;
+
+function fillDatalists(){
+  var names = {}, brands = {};
+  S.bikes.forEach(function(b){ if (b.customer) names[b.customer.trim()] = 1; if (b.brand) brands[b.brand] = (brands[b.brand]||0)+1; });
+  $('customerList').innerHTML = Object.keys(names).sort().map(function(n){ return '<option value="' + esc(n) + '">'; }).join('');
+  var ranked = Object.keys(brands).sort(function(a,b){ return brands[b]-brands[a] || a.localeCompare(b); });
+  var common = ['Trek','Specialized','Giant','Cannondale','Cervelo','Felt','Focus','Kona','Santa Cruz','Scott','Salsa','Surly','Jamis','Electra','Liv','Canyon','BMC','Bianchi'];
+  $('brandList').innerHTML = ranked.concat(common.filter(function(c){ return !brands[c]; })).map(function(n){ return '<option value="' + esc(n) + '">'; }).join('');
+  var chips = ranked.slice(0, 9);
+  ['Trek','Specialized','Giant'].forEach(function(c){ if (chips.indexOf(c) < 0 && chips.length < 11) chips.push(c); });
+  $('brandChips').innerHTML = chips.map(function(n){ return '<button type="button" class="chip" data-brand="' + esc(n) + '">' + esc(n) + '</button>'; }).join('');
+  $('styleChips').innerHTML = S.styles.map(function(s){ return '<button type="button" class="chip" data-style="' + esc(s) + '"><span class="swatch" style="background:' + styleColor(s) + '"></span>' + esc(s) + '</button>'; }).join('');
+}
+
+function setBrand(v){ $('f-brand').value = v || ''; syncBrandChips(); }
+function syncBrandChips(){ var v = $('f-brand').value.trim().toLowerCase(); $('brandChips').querySelectorAll('.chip').forEach(function(c){ c.classList.toggle('on', c.dataset.brand.toLowerCase() === v); }); }
+function setStyle(v){ $('styleChips').querySelectorAll('.chip').forEach(function(c){ c.classList.toggle('on', c.dataset.style === v); }); $('styleChips').dataset.val = v || ''; }
+function setStatus(v){ status = v; $('statusToggle').querySelectorAll('button').forEach(function(b){ b.classList.toggle('on', b.dataset.v === v); }); }
+
+$('brandChips').addEventListener('click', function(e){ var c = e.target.closest('.chip'); if (c) setBrand(c.dataset.brand); });
+$('f-brand').addEventListener('input', syncBrandChips);
+$('styleChips').addEventListener('click', function(e){ var c = e.target.closest('.chip'); if (c) setStyle(c.dataset.style); });
+$('statusToggle').addEventListener('click', function(e){ var b = e.target.closest('button'); if (b) setStatus(b.dataset.v); });
+
+function openSheet(b, preset){
+  fillDatalists();
+  editing = b || null;
+  var x = b || preset || {};
+  $('sheetTitle').textContent = b ? 'Edit bike' : 'Add a bike';
+  $('f-date').value = x.date || S.today || ymd(new Date());
+  $('f-customer').value = x.customer || '';
+  $('f-customer').readOnly = !!(b && b.signed);
+  setBrand(b ? b.brand : '');
+  setStyle(b ? b.style : '');
+  $('f-model').value = b ? (b.model || '') : '';
+  $('f-notes').value = b ? (b.notes || '') : '';
+  $('f-charged').value = b && b.charged !== '' && b.charged != null ? b.charged : '';
+  setStatus(b ? (b.completed ? 'done' : 'open') : (x.status || 'done'));
+  $('formErr').textContent = '';
+  var sn = $('signedNote');
+  if (b && b.signed){
+    sn.innerHTML = '✓ Signed waiver' + (b.email ? ' · ' + esc(b.email) : '') + (b.phone ? ' · ' + esc(b.phone) : '') + (b.pdf ? ' · <a href="' + esc(b.pdf) + '" target="_blank" rel="noopener">PDF</a>' : '') + '<br><span class="small">Name stays as signed.</span>';
+    sn.classList.remove('hidden');
+  } else sn.classList.add('hidden');
+  $('saveAnother').classList.toggle('hidden', !!b);
+  $('editActions').classList.toggle('hidden', !b);
+  disarm();
+  $('bikeScrim').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  if (!b && !x.customer) setTimeout(function(){ $('f-customer').focus(); }, 60);
+}
+function closeSheet(){ $('bikeScrim').classList.add('hidden'); document.body.style.overflow = ''; editing = null; }
+
+$('addBtn').addEventListener('click', function(){ openSheet(null); });
+$('closeSheet').addEventListener('click', closeSheet);
+$('bikeScrim').addEventListener('click', function(e){ if (e.target === this) closeSheet(); });
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape'){ closeSheet(); $('pwScrim').classList.add('hidden'); $('menu').classList.add('hidden'); } });
+
+function readForm(){
+  var brand = $('f-brand').value.trim().replace(/\s+/g,' '), style = $('styleChips').dataset.val || '';
+  if (!brand) return { err:'Pick or type a brand.' };
+  var known = S.bikes.map(function(b){ return b.brand; }).filter(function(n){ return n && n.toLowerCase() === brand.toLowerCase(); })[0];
+  if (known) brand = known;
+  if (!style) return { err:'Pick a style.' };
+  if (!$('f-date').value) return { err:'Pick a date.' };
+  return { bike: Object.assign({}, editing || {}, {
+    ref: editing ? editing.ref : '', date: $('f-date').value, customer: $('f-customer').value.trim(),
+    brand: brand, style: style, model: $('f-model').value.trim(), notes: $('f-notes').value.trim(),
+    charged: $('f-charged').value, completed: status === 'done' }) };
+}
+
+function save(another){
+  var f = readForm(); if (f.err){ $('formErr').textContent = f.err; return; }
+  var btns = [$('saveBtn'), $('saveAnother')]; btns.forEach(function(b){ b.disabled = true; });
+  $('saveBtn').textContent = 'Saving…';
+  api('saveBike', { bike: f.bike }).then(function(res){
+    upsertLocal(res.bike); rerender();
+    toast((editing ? 'Updated' : 'Added') + ' · ' + res.bike.brand + ' ' + res.bike.style);
+    if (another){ var keep = { customer: res.bike.customer, date: res.bike.date, status: res.bike.completed ? 'done' : 'open' }; openSheet(null, keep); $('f-brand').focus(); }
+    else closeSheet();
+  }).catch(function(err){ if (err.message !== 'auth') $('formErr').textContent = err.message; })
+    .then(function(){ btns.forEach(function(b){ b.disabled = false; }); $('saveBtn').textContent = 'Save bike'; });
+}
+$('bikeForm').addEventListener('submit', function(e){ e.preventDefault(); save(false); });
+$('saveAnother').addEventListener('click', function(){ save(true); });
+$('dupBtn').addEventListener('click', function(){ var b = editing; closeSheet(); openSheet(null, { customer: b.customer, date: b.date, status: b.completed ? 'done' : 'open' }); });
+
+function disarm(){ var d = $('delBtn'); d.classList.remove('armed'); d.textContent = 'Delete'; clearTimeout(armTimer); }
+$('delBtn').addEventListener('click', function(){
+  var d = this;
+  if (!d.classList.contains('armed')){
+    d.classList.add('armed'); d.textContent = editing && editing.signed ? 'Tap again — removes signed row' : 'Tap again to delete';
+    armTimer = setTimeout(disarm, 4000); return;
+  }
+  var b = editing; d.disabled = true;
+  api('deleteBike', { ref: b.ref }).then(function(){
+    S.bikes = S.bikes.filter(function(x){ return x.ref !== b.ref; }); rerender(); closeSheet(); toast('Deleted');
+  }).catch(function(err){ if (err.message !== 'auth') $('formErr').textContent = err.message; })
+    .then(function(){ d.disabled = false; disarm(); });
+});
+
+/* ───────── menu / password ───────── */
+$('menuBtn').addEventListener('click', function(e){ e.stopPropagation(); $('menu').classList.toggle('hidden'); });
+document.addEventListener('click', function(e){ if (!e.target.closest('#menu')) $('menu').classList.add('hidden'); });
+$('refreshBtn').addEventListener('click', function(){ load(false).then(function(){ toast('Up to date'); }); });
+$('logoutBtn').addEventListener('click', function(){ clearToken(); showLogin(''); });
+$('pwBtn').addEventListener('click', function(){ $('menu').classList.add('hidden'); $('pwErr').textContent = ''; $('pwScrim').classList.remove('hidden'); $('pwOld').focus(); });
+document.querySelectorAll('[data-close]').forEach(function(b){ b.addEventListener('click', function(){ $(b.dataset.close).classList.add('hidden'); }); });
+$('pwForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  api('changePassword', { oldPassword:$('pwOld').value, newPassword:$('pwNew').value, remember: remembered() })
+    .then(function(res){ setToken(res.token, remembered()); $('pwOld').value = $('pwNew').value = ''; $('pwScrim').classList.add('hidden'); toast('Password changed'); })
+    .catch(function(err){ if (err.message !== 'auth') $('pwErr').textContent = err.message; });
+});
+
+/* ───────── boot ───────── */
+if (getToken() && API) start(); else showLogin(API ? '' : 'Backend URL not set yet — paste it into config.js.');
+})();
+</script>
+</body>
+</html>
