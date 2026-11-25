@@ -360,7 +360,6 @@ function admSaveBike_(b) {
     Object.keys(fields).forEach(function (k) { arr[col[k] - 1] = fields[k]; });
     sh.appendRow(arr);
     row = sh.getLastRow();
-    sh.getRange(row, col[H.completed]).insertCheckboxes();
     b.ref = ref;
   } else {
     // Signed waivers keep the customer's own name/phone/email exactly as signed.
